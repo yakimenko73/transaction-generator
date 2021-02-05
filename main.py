@@ -56,19 +56,20 @@ def config_setup():
 		side_m = int(config["SideSettings"]["MODULUS"])
 		side_a = int(config["SideSettings"]["MULTIPLIER"])
 		side_c = int(config["SideSettings"]["INCREMENT"])
-		side_seed = int(config["SideSettings"]["SEED"])
 
 		instrument_m = int(config["InstrumentSettings"]["MODULUS"])
 		instrument_a = int(config["InstrumentSettings"]["MULTIPLIER"])
 		instrument_c = int(config["InstrumentSettings"]["INCREMENT"])
-		instrument_seed = int(config["InstrumentSettings"]["SEED"])
 
 		status_m = int(config["StatusSettings"]["MODULUS"])
 		status_a = int(config["StatusSettings"]["MULTIPLIER"])
 		status_c = int(config["StatusSettings"]["INCREMENT"])
-		status_seed = int(config["StatusSettings"]["SEED"])
+
+		pxfill_m = float(config["PXFillSettings"]["MODULUS"])
+		pxfill_a = float(config["PXFillSettings"]["MULTIPLIER"])
+		pxfill_c = float(config["PXFillSettings"]["INCREMENT"])
 	except (KeyError, ValueError,) as ex:
-		print("Incorrect parameters in the config file or the file is missing at all")
+		print(f"Incorrect parameters in the config file or the file is missing at all {ex}")
 
 		os._exit(0)
 
@@ -90,19 +91,21 @@ def config_setup():
 			"MODULUS": side_m,
 			"MULTIPLIER": side_a,
 			"INCREMENT": side_c,
-			"SEED": side_seed,
 		},
 		"InstrumentSettings": {
 			"MODULUS": instrument_m,
 			"MULTIPLIER": instrument_a,
 			"INCREMENT": instrument_c,
-			"SEED": instrument_seed,
 		},
 		"StatusSettings": {
 			"MODULUS": status_m,
 			"MULTIPLIER": status_a,
 			"INCREMENT": status_c,
-			"SEED": status_seed,
+		},
+		"PXFillSettings": {
+			"MODULUS": pxfill_m,
+			"MULTIPLIER": pxfill_a,
+			"INCREMENT": pxfill_c,
 		},
 	}
 
@@ -129,15 +132,15 @@ def logging_setup(regex_filepath, path_to_log, log_level, log_filemode):
 
 
 def workflow(parameters):
-	# id_ = id_generator(*parameters["IDSettings"].values())
-	# sides = side_generator(*parameters["SideSettings"].values())
-	# instruments = instrument_generator(*parameters["InstrumentSettings"].values())
-	# statuses = status_generator(*parameters["StatusSettings"].values())
+	id_ = id_generator(*parameters["IDSettings"].values())
+	sides = side_generator(*parameters["SideSettings"].values(), id_)
+	instruments = instrument_generator(*parameters["InstrumentSettings"].values(), id_)
+	statuses_on_broker = status_generator(*parameters["StatusSettings"].values(), id_)
+	init_prices = pxinit_generator(instruments, sides)
+	fill_price = pxfill_generator(*parameters["PXFillSettings"].values(), id_, init_prices)
 
-	orders = generate_orders(parameters)
+	print(fill_price)
 
-	for i in orders:
-		print(i)
 
 if __name__ == "__main__":
 	parameters_set = setup()
