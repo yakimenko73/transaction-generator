@@ -4,6 +4,8 @@ import re
 import logging
 import configparser
 
+from generator import id_generator, side_generator
+
 
 TRUE_LOG_LEVELS = [
 	'CRITICAL', 
@@ -24,18 +26,6 @@ TRUE_FILE_MODES = [
 ]
 
 
-def id_generator():
-	global a, m, c, seed
-	list_numbers = []
-
-	for i in range(2000):
-		seed = (a * seed + c) % m
-
-		list_numbers.append(seed)
-
-	return list_numbers
-
-
 def setup():
 	regex_filepath = re.compile("\w+/")
 
@@ -44,6 +34,8 @@ def setup():
 		parameters_set["Path"]["PATH_TO_LOG"], 
 		*parameters_set["LoggingSettings"].values(),
 	)
+
+	return parameters_set
 
 
 def config_setup():
@@ -56,11 +48,16 @@ def config_setup():
 		log_level = config["LoggingSettings"]["LEVEL"].upper()
 		log_filemode = config["LoggingSettings"]["FILEMODE"].lower()
 
-		ID_m = config["IDSettings"]["MODULUS"]
-		ID_a = config["IDSettings"]["MULTIPLIER"]
-		ID_c = config["IDSettings"]["INCREMENT"]
-		ID_seed = config["IDSettings"]["SEED"]
-	except KeyError as ex:
+		ID_m = int(config["IDSettings"]["MODULUS"])
+		ID_a = int(config["IDSettings"]["MULTIPLIER"])
+		ID_c = int(config["IDSettings"]["INCREMENT"])
+		ID_seed = int(config["IDSettings"]["SEED"])
+
+		side_m = int(config["SideSettings"]["MODULUS"])
+		side_a = int(config["SideSettings"]["MULTIPLIER"])
+		side_c = int(config["SideSettings"]["INCREMENT"])
+		side_seed = int(config["SideSettings"]["SEED"])
+	except (KeyError, ValueError) as ex:
 		print("Incorrect parameters in the config file or the file is missing at all")
 
 		os._exit(0)
@@ -78,6 +75,12 @@ def config_setup():
 			"MULTIPLIER": ID_a,
 			"INCREMENT": ID_c,
 			"SEED": ID_seed,
+		},
+		"SideSettings": {
+			"MODULUS": side_m,
+			"MULTIPLIER": side_a,
+			"INCREMENT": side_c,
+			"SEED": side_seed,
 		},
 	}
 
@@ -103,5 +106,12 @@ def logging_setup(regex_filepath, path_to_log, log_filemode, log_level):
 		datefmt='%Y-%m-%d %H:%M:%S')
 
 
+def workflow(parameters):
+	id_ = id_generator(*parameters["IDSettings"].values())
+	sides = side_generator(*parameters["SideSettings"].values())
+
+	print(sides)
+
 if __name__ == "__main__":
-	setup()
+	parameters_set = setup()
+	workflow(parameters_set)
