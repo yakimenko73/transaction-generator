@@ -16,3 +16,34 @@ INSTRUMENTS = [
 	"GBPCAD",
 	"EURRUB",
 ]
+
+STATUSES = [
+	"NEW",
+	"INPROCESS",
+	"FILL",
+	"PARTIALFILL",
+	"CANCEL",
+	"DONE",
+]
+
+NOTES = [
+	"NOTE 1",
+	"NOTE 2",
+	"NOTE 3",
+	"NOTE 4",
+	"NOTE 5",
+	"NOTE 6",
+	"NOTE 7",
+	"NOTE 8",
+	"NOTE 9",
+	"NOTE 10",
+	"NOTE 11",
+]
+
+TAGS = [
+	"TRADE",
+	"SPECIAL TRADE",
+	"DISTANCE TRADE",
+	"REGULAR TRADE",
+	"TRANSFER",
+]

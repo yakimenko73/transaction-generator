@@ -37,3 +37,22 @@ def instrument_generator(m, a, c, seed):
 			list_instruments.append(INSTRUMENTS[0])
 
 	return list_instruments
+
+def status_generator(m, a, c, seed):
+	list_statuses_on_broker = []
+
+	for i in range(2000):
+		seed = (a * seed + c) % m
+
+		if seed <= 341:
+			list_statuses_on_broker.append(STATUSES[2])
+		elif seed >= 342 and seed <= 683:
+			list_statuses_on_broker.append(STATUSES[3])
+		else:
+			list_statuses_on_broker.append(STATUSES[4])
+
+	return list_statuses_on_broker
+
+
+def generate_records(parameters):
+	pass

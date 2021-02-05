@@ -4,10 +4,7 @@ import re
 import logging
 import configparser
 
-from generator import (id_generator, 
-	side_generator, 
-	instrument_generator,
-)
+from generators import *
 
 
 TRUE_LOG_LEVELS = [
@@ -65,7 +62,12 @@ def config_setup():
 		instrument_a = int(config["InstrumentSettings"]["MULTIPLIER"])
 		instrument_c = int(config["InstrumentSettings"]["INCREMENT"])
 		instrument_seed = int(config["InstrumentSettings"]["SEED"])
-	except (KeyError, ValueError) as ex:
+
+		status_m = int(config["StatusSettings"]["MODULUS"])
+		status_a = int(config["StatusSettings"]["MULTIPLIER"])
+		status_c = int(config["StatusSettings"]["INCREMENT"])
+		status_seed = int(config["StatusSettings"]["SEED"])
+	except (KeyError, ValueError,) as ex:
 		print("Incorrect parameters in the config file or the file is missing at all")
 
 		os._exit(0)
@@ -96,6 +98,12 @@ def config_setup():
 			"INCREMENT": instrument_c,
 			"SEED": instrument_seed,
 		},
+		"StatusSettings": {
+			"MODULUS": status_m,
+			"MULTIPLIER": status_a,
+			"INCREMENT": status_c,
+			"SEED": status_seed,
+		},
 	}
 
 	return parameters_set
@@ -124,8 +132,10 @@ def workflow(parameters):
 	id_ = id_generator(*parameters["IDSettings"].values())
 	sides = side_generator(*parameters["SideSettings"].values())
 	instruments = instrument_generator(*parameters["InstrumentSettings"].values())
+	statuses = status_generator(*parameters["StatusSettings"].values())
 
-	print(instruments)
+	print(statuses)
+
 
 if __name__ == "__main__":
 	parameters_set = setup()
