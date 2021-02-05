@@ -4,7 +4,10 @@ import re
 import logging
 import configparser
 
-from generator import id_generator, side_generator
+from generator import (id_generator, 
+	side_generator, 
+	instrument_generator,
+)
 
 
 TRUE_LOG_LEVELS = [
@@ -57,6 +60,11 @@ def config_setup():
 		side_a = int(config["SideSettings"]["MULTIPLIER"])
 		side_c = int(config["SideSettings"]["INCREMENT"])
 		side_seed = int(config["SideSettings"]["SEED"])
+
+		instrument_m = int(config["InstrumentSettings"]["MODULUS"])
+		instrument_a = int(config["InstrumentSettings"]["MULTIPLIER"])
+		instrument_c = int(config["InstrumentSettings"]["INCREMENT"])
+		instrument_seed = int(config["InstrumentSettings"]["SEED"])
 	except (KeyError, ValueError) as ex:
 		print("Incorrect parameters in the config file or the file is missing at all")
 
@@ -82,12 +90,18 @@ def config_setup():
 			"INCREMENT": side_c,
 			"SEED": side_seed,
 		},
+		"InstrumentSettings": {
+			"MODULUS": instrument_m,
+			"MULTIPLIER": instrument_a,
+			"INCREMENT": instrument_c,
+			"SEED": instrument_seed,
+		},
 	}
 
 	return parameters_set
 
 
-def logging_setup(regex_filepath, path_to_log, log_filemode, log_level):
+def logging_setup(regex_filepath, path_to_log, log_level, log_filemode):
 	if not log_level in TRUE_LOG_LEVELS:
 		log_level = 'DEBUG'
 
@@ -109,8 +123,9 @@ def logging_setup(regex_filepath, path_to_log, log_filemode, log_level):
 def workflow(parameters):
 	id_ = id_generator(*parameters["IDSettings"].values())
 	sides = side_generator(*parameters["SideSettings"].values())
+	instruments = instrument_generator(*parameters["InstrumentSettings"].values())
 
-	print(sides)
+	print(instruments)
 
 if __name__ == "__main__":
 	parameters_set = setup()

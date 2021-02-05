@@ -1,0 +1,18 @@
+SIDES = [
+	"SELL",
+	"BUY",
+]
+
+INSTRUMENTS = [
+	"EURGBP",
+	"EURCHF",
+	"EURCAD",
+	"AUDEUR",
+	"EURNZD",
+	"EURJPY",
+	"GBPJPY",
+	"CHFJPY",
+	"AUDJPY",
+	"GBPCAD",
+	"EURRUB",
+]
