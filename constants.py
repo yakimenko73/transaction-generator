@@ -20,9 +20,11 @@ INSTRUMENTS = [
 STATUSES = [
 	"NEW",
 	"INPROCESS",
-	"FILL",
-	"PARTIALFILL",
-	"CANCEL",
+	[
+		"FILL",
+		"PARTIALFILL",
+		"CANCEL",
+	],
 	"DONE",
 ]
 

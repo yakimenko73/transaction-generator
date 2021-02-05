@@ -129,13 +129,15 @@ def logging_setup(regex_filepath, path_to_log, log_level, log_filemode):
 
 
 def workflow(parameters):
-	id_ = id_generator(*parameters["IDSettings"].values())
-	sides = side_generator(*parameters["SideSettings"].values())
-	instruments = instrument_generator(*parameters["InstrumentSettings"].values())
-	statuses = status_generator(*parameters["StatusSettings"].values())
+	# id_ = id_generator(*parameters["IDSettings"].values())
+	# sides = side_generator(*parameters["SideSettings"].values())
+	# instruments = instrument_generator(*parameters["InstrumentSettings"].values())
+	# statuses = status_generator(*parameters["StatusSettings"].values())
 
-	print(statuses)
+	orders = generate_orders(parameters)
 
+	for i in orders:
+		print(i)
 
 if __name__ == "__main__":
 	parameters_set = setup()
