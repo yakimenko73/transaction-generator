@@ -68,7 +68,20 @@ def config_setup():
 		pxfill_m = float(config["PXFillSettings"]["MODULUS"])
 		pxfill_a = float(config["PXFillSettings"]["MULTIPLIER"])
 		pxfill_c = float(config["PXFillSettings"]["INCREMENT"])
-	except (KeyError, ValueError,) as ex:
+
+		volumeinit_m = int(config["VolumeInitSettings"]["MODULUS"])
+		volumeinit_a = int(config["VolumeInitSettings"]["MULTIPLIER"])
+		volumeinit_c = int(config["VolumeInitSettings"]["INCREMENT"])
+		volumeinit_seed = int(config["VolumeInitSettings"]["SEED"])
+
+		volumefill_a = int(config["VolumeFillSettings"]["MULTIPLIER"])
+		volumefill_c = int(config["VolumeFillSettings"]["INCREMENT"])
+
+		date_m = int(config["DateSettings"]["MODULUS"])
+		date_a = int(config["DateSettings"]["MULTIPLIER"])
+		date_c = int(config["DateSettings"]["INCREMENT"])
+		date_start = config["DateSettings"]["START_DATE"]
+	except (KeyError, ValueError, ) as ex:
 		print(f"Incorrect parameters in the config file or the file is missing at all {ex}")
 
 		os._exit(0)
@@ -107,6 +120,22 @@ def config_setup():
 			"MULTIPLIER": pxfill_a,
 			"INCREMENT": pxfill_c,
 		},
+		"VolumeInitSettings": {
+			"MODULUS": volumeinit_m,
+			"MULTIPLIER": volumeinit_a,
+			"INCREMENT": volumeinit_c,
+			"SEED": volumeinit_seed,
+		},
+		"VolumeFillSettings": {
+			"MULTIPLIER": volumefill_a,
+			"INCREMENT": volumefill_c,
+		},
+		"DateSettings": {
+			"MODULUS": date_m,
+			"MULTIPLIER": date_a,
+			"INCREMENT": date_c,
+			"START_DATE": date_start,
+		},
 	}
 
 	return parameters_set
@@ -137,9 +166,21 @@ def workflow(parameters):
 	instruments = instrument_generator(*parameters["InstrumentSettings"].values(), id_)
 	statuses_on_broker = status_generator(*parameters["StatusSettings"].values(), id_)
 	init_prices = pxinit_generator(instruments, sides)
-	fill_price = pxfill_generator(*parameters["PXFillSettings"].values(), id_, init_prices)
+	fill_prices = pxfill_generator(
+		*parameters["PXFillSettings"].values(), 
+		id_, 
+		init_prices
+	)
+	init_volumes = volumeinit_generator(*parameters["VolumeInitSettings"].values())
+	fill_volumes = volumefill_generator(
+		*parameters["VolumeFillSettings"].values(), 
+		id_, 
+		statuses_on_broker, 
+		init_volumes
+	)
+	dates = date_generator(*parameters["DateSettings"].values(), id_)
 
-	print(fill_price)
+	print(dates)
 
 
 if __name__ == "__main__":

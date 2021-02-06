@@ -9,6 +9,15 @@ ORDERS_CREATED_AND_DONE = 60
 # percentage of orders completed after the end of the recording
 ORDERS_COMPLETED_AFTER_RECORDING = 10
 
+# the number of records for each order in the first range
+NUMBER_RECORDS_FIRST_SEGMENT = 3
+
+# the number of records for each order in the second range
+NUMBER_RECORDS_SECOND_SEGMENT = 4
+
+# the number of records for each order in the third range
+NUMBER_RECORDS_THIRD_SEGMENT = 3
+
 
 SIDES = [
 	"SELL",

@@ -1,3 +1,6 @@
+import math
+import datetime as dt
+
 from constants import *
 
 
@@ -67,20 +70,76 @@ def pxinit_generator(instruments, sides):
 	return list_prices
 
 
-def pxfill_generator(m, a, c, seeds, px_prices):
+def pxfill_generator(m, a, c, seeds, init_prices):
 	list_prices = []
 
 	for i in range(MAX_NUMBER_ORDERS):
 		seed = round((a * int(seeds[i], 16) + c) % m, 5)
 
 		if seed < 0.0005:
-			fill_price = px_prices[i] + seed
+			fill_price = init_prices[i] + seed
 		else:
-			fill_price = px_prices[i] - seed
+			fill_price = init_prices[i] - seed
 
 		list_prices.append(round(fill_price, 5))
 
 	return list_prices
+
+
+def volumeinit_generator(m, a, c, seed):
+	list_volumes = []
+	rounding_number = 1000
+
+	for i in range(MAX_NUMBER_ORDERS):
+		seed = (a * int(str(seed), 16) + c) % m
+		seed = math.ceil(seed/rounding_number)*rounding_number-rounding_number
+
+		list_volumes.append(seed)
+
+	return list_volumes
+
+
+def volumefill_generator(a, c, seeds, statuses_on_broker, init_volumes):
+	list_volumes = []
+	rounding_number = 1000
+
+	for i in range(MAX_NUMBER_ORDERS):
+		seed = (a * int(seeds[i], 16) + c) % init_volumes[i]
+		seed = math.ceil(seed/rounding_number)*rounding_number-rounding_number
+
+		if statuses_on_broker[i] == STATUSES[2][1]:
+			fill_volume = init_volumes[i] - seed
+		elif statuses_on_broker[i] == STATUSES[2][2]:
+			fill_volume = 0
+		else:
+			fill_volume = init_volumes[i]
+
+		list_volumes.append(fill_volume)
+
+	return list_volumes
+
+
+def date_generator(m, a, c, start_date, seeds):
+	date = dt.datetime.strptime(start_date, '%d.%m.%Y %H:%M:%S.%f')
+	print(date.time())
+	print(date.mill)
+	list_dates = []
+
+	divisor_number = MAX_NUMBER_ORDERS/100
+	number_records = int(divisor_number * ORDERS_CREATED_BEFORE_RECORDING * NUMBER_RECORDS_FIRST_SEGMENT +
+		divisor_number * ORDERS_CREATED_AND_DONE * NUMBER_RECORDS_SECOND_SEGMENT +
+		divisor_number * ORDERS_COMPLETED_AFTER_RECORDING * NUMBER_RECORDS_THIRD_SEGMENT
+	)
+
+	# for i in range(number_records):
+	# 	if i == 0:
+	# 		list_dates.append(date)
+		
+	# 	date = date + 0.000001
+
+	# 	list_dates.append(date)
+
+	# return list_dates
 
 
 def generate_orders(parameters):
@@ -103,7 +162,7 @@ def generate_orders(parameters):
 			instruments, 
 			statuses_on_broker,
 		),
-		*generate_thirty_segment(ORDERS_COMPLETED_AFTER_RECORDING, 
+		*generate_third_segment(ORDERS_COMPLETED_AFTER_RECORDING, 
 			id_, 
 			sides, 
 			instruments, 
@@ -125,13 +184,13 @@ def generate_first_segment(percent, id_, sides, instruments, statuses_on_broker)
 				status = statuses_on_broker[order_number]
 			else:
 				status = STATUSES[i+1]
-			row = [
+			record = [
 				id_[order_number],
 				sides[order_number],
 				instruments[order_number],
 				status,
 			]
-			order.append(row)
+			order.append(record)
 		list_orders.append(order)
 
 	return list_orders
@@ -148,19 +207,19 @@ def generate_second_segment(percent, id_, sides, instruments, statuses_on_broker
 				status = statuses_on_broker[order_number]
 			else:
 				status = STATUSES[i]
-			row = [
+			record = [
 				id_[order_number],
 				sides[order_number],
 				instruments[order_number],
 				status,
 			]
-			order.append(row)
+			order.append(record)
 		list_orders.append(order)
 
 	return list_orders
 
 
-def generate_thirty_segment(percent, id_, sides, instruments, statuses_on_broker):
+def generate_third_segment(percent, id_, sides, instruments, statuses_on_broker):
 	number_records_to_generate = int((MAX_NUMBER_ORDERS/100) * percent)
 	list_orders = []
 
@@ -171,13 +230,13 @@ def generate_thirty_segment(percent, id_, sides, instruments, statuses_on_broker
 				status = statuses_on_broker[order_number]
 			else:
 				status = STATUSES[i]
-			row = [
+			record = [
 				id_[order_number],
 				sides[order_number],
 				instruments[order_number],
 				status,
 			]
-			order.append(row)
+			order.append(record)
 		list_orders.append(order)
 
 	return list_orders
