@@ -119,10 +119,8 @@ def volumefill_generator(a, c, seeds, statuses_on_broker, init_volumes):
 	return list_volumes
 
 
-def date_generator(m, a, c, start_date, seeds):
+def date_generator(m, a, c, seed, start_date):
 	date = dt.datetime.strptime(start_date, '%d.%m.%Y %H:%M:%S.%f')
-	print(date.time())
-	print(date.mill)
 	list_dates = []
 
 	divisor_number = MAX_NUMBER_ORDERS/100
@@ -131,15 +129,17 @@ def date_generator(m, a, c, start_date, seeds):
 		divisor_number * ORDERS_COMPLETED_AFTER_RECORDING * NUMBER_RECORDS_THIRD_SEGMENT
 	)
 
-	# for i in range(number_records):
-	# 	if i == 0:
-	# 		list_dates.append(date)
+	for i in range(number_records):
+		seed = (a * seed + c) % m
+
+		if i == 0:
+			list_dates.append(date.strftime('%d.%m.%Y %H:%M:%S.%f')[:-3])
 		
-	# 	date = date + 0.000001
+		date = date + dt.timedelta(milliseconds=seed)
 
-	# 	list_dates.append(date)
+		list_dates.append(date.strftime('%d.%m.%Y %H:%M:%S.%f')[:-3])
 
-	# return list_dates
+	return list_dates
 
 
 def generate_orders(parameters):

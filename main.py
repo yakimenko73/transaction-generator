@@ -80,6 +80,7 @@ def config_setup():
 		date_m = int(config["DateSettings"]["MODULUS"])
 		date_a = int(config["DateSettings"]["MULTIPLIER"])
 		date_c = int(config["DateSettings"]["INCREMENT"])
+		date_seed = int(config["DateSettings"]["SEED"])
 		date_start = config["DateSettings"]["START_DATE"]
 	except (KeyError, ValueError, ) as ex:
 		print(f"Incorrect parameters in the config file or the file is missing at all {ex}")
@@ -134,6 +135,7 @@ def config_setup():
 			"MODULUS": date_m,
 			"MULTIPLIER": date_a,
 			"INCREMENT": date_c,
+			"SEED": date_seed,
 			"START_DATE": date_start,
 		},
 	}
@@ -178,9 +180,7 @@ def workflow(parameters):
 		statuses_on_broker, 
 		init_volumes
 	)
-	dates = date_generator(*parameters["DateSettings"].values(), id_)
-
-	print(dates)
+	dates = date_generator(*parameters["DateSettings"].values())
 
 
 if __name__ == "__main__":
