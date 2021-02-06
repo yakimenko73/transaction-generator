@@ -37,7 +37,7 @@ def instrument_generator(m, a, c, seeds):
 		try:
 			list_instruments.append(INSTRUMENTS[seed-1][0])
 		except IndexError:
-			list_instruments.append(INSTRUMENTS[0][0])
+			list_instruments.append(INSTRUMENTS[10][0])
 
 	return list_instruments
 
@@ -140,6 +140,18 @@ def date_generator(m, a, c, seed, start_date):
 		list_dates.append(date.strftime('%d.%m.%Y %H:%M:%S.%f')[:-3])
 
 	return list_dates
+
+def note_generator(m, a, c, seeds):
+	list_notes = []
+
+	for i in range(MAX_NUMBER_ORDERS):
+		seed = (a * int(seeds[i], 16) + c) % m
+		try:
+			list_notes.append(NOTES[seed-1])
+		except IndexError:
+			list_notes.append(NOTES[10])
+
+	return list_notes
 
 
 def generate_orders(parameters):

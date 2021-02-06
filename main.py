@@ -82,6 +82,10 @@ def config_setup():
 		date_c = int(config["DateSettings"]["INCREMENT"])
 		date_seed = int(config["DateSettings"]["SEED"])
 		date_start = config["DateSettings"]["START_DATE"]
+
+		note_m = int(config["NoteSettings"]["MODULUS"])
+		note_a = int(config["NoteSettings"]["MULTIPLIER"])
+		note_c = int(config["NoteSettings"]["INCREMENT"])
 	except (KeyError, ValueError, ) as ex:
 		print(f"Incorrect parameters in the config file or the file is missing at all {ex}")
 
@@ -138,6 +142,11 @@ def config_setup():
 			"SEED": date_seed,
 			"START_DATE": date_start,
 		},
+		"NoteSettings": {
+			"MODULUS": note_m,
+			"MULTIPLIER": note_a,
+			"INCREMENT": note_c,
+		},
 	}
 
 	return parameters_set
@@ -181,7 +190,10 @@ def workflow(parameters):
 		init_volumes
 	)
 	dates = date_generator(*parameters["DateSettings"].values())
+	notes = note_generator(*parameters["NoteSettings"].values(), id_)
 
+	for i in range(2000):
+		print(notes[i])
 
 if __name__ == "__main__":
 	parameters_set = setup()
