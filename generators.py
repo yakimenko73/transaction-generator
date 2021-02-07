@@ -20,7 +20,6 @@ def side_generator(m, a, c, seeds):
 
 	for i in range(MAX_NUMBER_ORDERS):
 		seed = (a * int(seeds[i], 16) + c) % m
-
 		if seed <= 50:
 			list_sides.append(SIDES[0])
 		else:
@@ -47,7 +46,6 @@ def status_generator(m, a, c, seeds):
 
 	for i in range(MAX_NUMBER_ORDERS):
 		seed = (a * int(seeds[i], 16) + c) % m
-
 		if seed <= 100:
 			list_statuses_on_broker.append(STATUSES[2][0])
 		elif seed >= 101 and seed <= 200:
@@ -76,7 +74,6 @@ def pxfill_generator(m, a, c, seeds, init_prices):
 
 	for i in range(MAX_NUMBER_ORDERS):
 		seed = round((a * int(seeds[i], 16) + c) % m, 5)
-
 		if seed < 0.0005:
 			fill_price = init_prices[i] + seed
 		else:
@@ -93,7 +90,7 @@ def volumeinit_generator(m, a, c, seed):
 
 	for i in range(MAX_NUMBER_ORDERS):
 		seed = (a * int(str(seed), 16) + c) % m
-		seed = math.ceil(seed/rounding_number)*rounding_number-rounding_number
+		seed = math.ceil(seed/rounding_number) * rounding_number - rounding_number
 
 		list_volumes.append(seed)
 
@@ -106,7 +103,7 @@ def volumefill_generator(a, c, seeds, statuses_on_broker, init_volumes):
 
 	for i in range(MAX_NUMBER_ORDERS):
 		seed = (a * int(seeds[i], 16) + c) % init_volumes[i]
-		seed = math.ceil(seed/rounding_number)*rounding_number-rounding_number
+		seed = math.ceil(seed/rounding_number) * rounding_number - rounding_number
 
 		if statuses_on_broker[i] == STATUSES[2][1]:
 			fill_volume = init_volumes[i] - seed
@@ -127,11 +124,11 @@ def date_generator(m, a, c, seed, start_date):
 	for order_number in range(MAX_NUMBER_ORDERS):
 		dates_for_order = []
 		if order_number < 599:
-			number_dates = 3
+			number_dates = NUMBER_RECORDS_FOR_FIRST_SEGMENT
 		elif order_number >= 600 and order_number <= 1799:
-			number_dates = 4
+			number_dates = NUMBER_RECORDS_FOR_SECOND_SEGMENT
 		else:
-			number_dates = 3
+			number_dates = NUMBER_RECORDS_FOR_THIRD_SEGMENT
 
 		for record_number in range(number_dates):
 			seed = (a * seed + c) % m
@@ -189,14 +186,14 @@ def create_list_orders(parameters):
 
 	for i in range(MAX_NUMBER_ORDERS):
 		if i < 599:
-			number_records = 3
-			segment_number = 1
+			number_records = NUMBER_RECORDS_FOR_FIRST_SEGMENT
+			is_first_segment = True
 		elif i >=600 and i <=1799:
-			number_records = 4
-			segment_number = 2
+			number_records = NUMBER_RECORDS_FOR_SECOND_SEGMENT
+			is_first_segment = False
 		else:
-			number_records = 3
-			segment_number = 3
+			number_records = NUMBER_RECORDS_FOR_THIRD_SEGMENT
+			is_first_segment = False
 
 		order = create_order(attributes[0][i],
 			attributes[1][i],
@@ -209,20 +206,21 @@ def create_list_orders(parameters):
 			attributes[8][i],
 			dates=attributes[9][i],
 			number_records=number_records,
-			segment_number=segment_number,
+			is_first_segment=is_first_segment,
 		)
 
 		list_orders.append(order)
 
 	return list_orders
 
-
-def create_order(*attributes, dates, number_records, segment_number):
-	list_records = []
+def create_order(*attributes, dates, number_records, is_first_segment):
+	order = []
 	id_, side, instrument, status_on_broker, init_price, fill_price, init_volume, fill_volume, note = attributes
 
 	for record_number in range(number_records):
-		if number_records == 3 and segment_number == 1:
+		record = []
+		if number_records == NUMBER_RECORDS_FOR_FIRST_SEGMENT \
+		and is_first_segment:
 			if record_number == 1:
 				status = status_on_broker
 			else:
@@ -232,7 +230,8 @@ def create_order(*attributes, dates, number_records, segment_number):
 				fvolume = 0
 			else:
 				fvolume = fill_volume
-		elif number_records == 4:
+		elif number_records == NUMBER_RECORDS_FOR_SECOND_SEGMENT \
+		or number_records == NUMBER_RECORDS_FOR_THIRD_SEGMENT:
 			if record_number == 2:
 				status = status_on_broker
 			else:
@@ -242,17 +241,15 @@ def create_order(*attributes, dates, number_records, segment_number):
 				fvolume = 0
 			else:
 				fvolume = fill_volume
-		else:
-			if record_number == 2:
-				status = status_on_broker
-			else:
-				status = STATUSES[record_number]
 
-			if status == STATUSES[0] or status == STATUSES[1]:
-				fvolume = 0
-			else:
-				fvolume = fill_volume
+		record = [
+			id_, side, 
+			instrument, status, 
+			init_price, fill_price, 
+			init_volume, fvolume, 
+			note, dates[record_number]
+		]
 
-		list_records.append([id_, side, instrument, status, init_price, fill_price, init_volume, fvolume, note, dates[record_number]])
+		order.append(record)
 
-	return list_records
+	return order

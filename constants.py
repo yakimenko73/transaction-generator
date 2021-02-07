@@ -9,6 +9,12 @@ ORDERS_CREATED_AND_DONE = 60
 # percentage of orders completed after the end of the recording
 ORDERS_COMPLETED_AFTER_RECORDING = 10
 
+NUMBER_RECORDS_FOR_FIRST_SEGMENT = 3
+
+NUMBER_RECORDS_FOR_SECOND_SEGMENT = 4
+
+NUMBER_RECORDS_FOR_THIRD_SEGMENT = 3
+
 SIDES = [
 	"SELL",
 	"BUY",
@@ -60,4 +66,22 @@ TAGS = [
 	"DISTANCE TRADE",
 	"REGULAR TRADE",
 	"TRANSFER",
+]
+
+TRUE_LOG_LEVELS = [
+	'CRITICAL', 
+	'ERROR', 
+	'WARNING', 
+	'INFO', 
+	'DEBUG', 
+]
+
+TRUE_FILE_MODES = [
+	'r',
+	'w',
+	'x',
+	'a',
+	'b',
+	't',
+	'+',
 ]

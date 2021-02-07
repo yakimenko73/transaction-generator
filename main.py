@@ -5,32 +5,15 @@ import logging
 import configparser
 
 from generators import *
-
-
-TRUE_LOG_LEVELS = [
-	'CRITICAL', 
-	'ERROR', 
-	'WARNING', 
-	'INFO', 
-	'DEBUG', 
-]
-
-TRUE_FILE_MODES = [
-	'r',
-	'w',
-	'x',
-	'a',
-	'b',
-	't',
-	'+',
-]
+from constants import TRUE_LOG_LEVELS, TRUE_FILE_MODES
 
 
 def setup():
 	regex_filepath = re.compile("\w+/")
 
 	parameters_set = config_setup()
-	logging_setup(regex_filepath, 
+	logging_setup(
+		regex_filepath, 
 		parameters_set["Path"]["PATH_TO_LOG"], 
 		*parameters_set["LoggingSettings"].values(),
 	)
@@ -43,111 +26,67 @@ def config_setup():
 	config.read("settings/config.ini")
 
 	try:
-		path_to_log = config["Path"]["PATH_TO_LOG"]
-
-		log_level = config["LoggingSettings"]["LEVEL"].upper()
-		log_filemode = config["LoggingSettings"]["FILEMODE"].lower()
-
-		ID_m = int(config["IDSettings"]["MODULUS"])
-		ID_a = int(config["IDSettings"]["MULTIPLIER"])
-		ID_c = int(config["IDSettings"]["INCREMENT"])
-		ID_seed = int(config["IDSettings"]["SEED"])
-
-		side_m = int(config["SideSettings"]["MODULUS"])
-		side_a = int(config["SideSettings"]["MULTIPLIER"])
-		side_c = int(config["SideSettings"]["INCREMENT"])
-
-		instrument_m = int(config["InstrumentSettings"]["MODULUS"])
-		instrument_a = int(config["InstrumentSettings"]["MULTIPLIER"])
-		instrument_c = int(config["InstrumentSettings"]["INCREMENT"])
-
-		status_m = int(config["StatusSettings"]["MODULUS"])
-		status_a = int(config["StatusSettings"]["MULTIPLIER"])
-		status_c = int(config["StatusSettings"]["INCREMENT"])
-
-		pxfill_m = float(config["PXFillSettings"]["MODULUS"])
-		pxfill_a = float(config["PXFillSettings"]["MULTIPLIER"])
-		pxfill_c = float(config["PXFillSettings"]["INCREMENT"])
-
-		volumeinit_m = int(config["VolumeInitSettings"]["MODULUS"])
-		volumeinit_a = int(config["VolumeInitSettings"]["MULTIPLIER"])
-		volumeinit_c = int(config["VolumeInitSettings"]["INCREMENT"])
-		volumeinit_seed = int(config["VolumeInitSettings"]["SEED"])
-
-		volumefill_a = int(config["VolumeFillSettings"]["MULTIPLIER"])
-		volumefill_c = int(config["VolumeFillSettings"]["INCREMENT"])
-
-		date_m = int(config["DateSettings"]["MODULUS"])
-		date_a = int(config["DateSettings"]["MULTIPLIER"])
-		date_c = int(config["DateSettings"]["INCREMENT"])
-		date_seed = int(config["DateSettings"]["SEED"])
-		date_start = config["DateSettings"]["START_DATE"]
-
-		note_m = int(config["NoteSettings"]["MODULUS"])
-		note_a = int(config["NoteSettings"]["MULTIPLIER"])
-		note_c = int(config["NoteSettings"]["INCREMENT"])
+		parameters_set = {
+			"Path": {
+				"PATH_TO_LOG": config["Path"]["PATH_TO_LOG"],
+			},
+			"LoggingSettings": {
+				"LEVEL": config["LoggingSettings"]["LEVEL"].upper(),
+				"FILEMODE": config["LoggingSettings"]["FILEMODE"].lower(),
+			},
+			"IDSettings": {
+				"MODULUS": int(config["IDSettings"]["MODULUS"]),
+				"MULTIPLIER": int(config["IDSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["IDSettings"]["INCREMENT"]),
+				"SEED": int(config["IDSettings"]["SEED"]),
+			},
+			"SideSettings": {
+				"MODULUS": int(config["SideSettings"]["MODULUS"]),
+				"MULTIPLIER": int(config["SideSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["SideSettings"]["INCREMENT"]),
+			},
+			"InstrumentSettings": {
+				"MODULUS": int(config["InstrumentSettings"]["MODULUS"]),
+				"MULTIPLIER": int(config["InstrumentSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["InstrumentSettings"]["INCREMENT"]),
+			},
+			"StatusSettings": {
+				"MODULUS": int(config["StatusSettings"]["MODULUS"]),
+				"MULTIPLIER": int(config["StatusSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["StatusSettings"]["INCREMENT"]),
+			},
+			"PXFillSettings": {
+				"MODULUS": float(config["PXFillSettings"]["MODULUS"]),
+				"MULTIPLIER": float(config["PXFillSettings"]["MULTIPLIER"]),
+				"INCREMENT": float(config["PXFillSettings"]["INCREMENT"]),
+			},
+			"VolumeInitSettings": {
+				"MODULUS": int(config["VolumeInitSettings"]["MODULUS"]),
+				"MULTIPLIER": int(config["VolumeInitSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["VolumeInitSettings"]["INCREMENT"]),
+				"SEED": int(config["VolumeInitSettings"]["SEED"]),
+			},
+			"VolumeFillSettings": {
+				"MULTIPLIER": int(config["VolumeFillSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["VolumeFillSettings"]["INCREMENT"]),
+			},
+			"DateSettings": {
+				"MODULUS": int(config["DateSettings"]["MODULUS"]),
+				"MULTIPLIER": int(config["DateSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["DateSettings"]["INCREMENT"]),
+				"SEED": int(config["DateSettings"]["SEED"]),
+				"START_DATE": config["DateSettings"]["START_DATE"],
+			},
+			"NoteSettings": {
+				"MODULUS": int(config["NoteSettings"]["MODULUS"]),
+				"MULTIPLIER": int(config["NoteSettings"]["MULTIPLIER"]),
+				"INCREMENT": int(config["NoteSettings"]["INCREMENT"]),
+			},
+		}
 	except (KeyError, ValueError, ) as ex:
 		print(f"Incorrect parameters in the config file or the file is missing at all {ex}")
 
 		os._exit(0)
-
-	parameters_set = {
-		"Path": {
-			"PATH_TO_LOG": path_to_log,
-		},
-		"LoggingSettings": {
-			"LEVEL": log_level,
-			"FILEMODE": log_filemode,
-		},
-		"IDSettings": {
-			"MODULUS": ID_m,
-			"MULTIPLIER": ID_a,
-			"INCREMENT": ID_c,
-			"SEED": ID_seed,
-		},
-		"SideSettings": {
-			"MODULUS": side_m,
-			"MULTIPLIER": side_a,
-			"INCREMENT": side_c,
-		},
-		"InstrumentSettings": {
-			"MODULUS": instrument_m,
-			"MULTIPLIER": instrument_a,
-			"INCREMENT": instrument_c,
-		},
-		"StatusSettings": {
-			"MODULUS": status_m,
-			"MULTIPLIER": status_a,
-			"INCREMENT": status_c,
-		},
-		"PXFillSettings": {
-			"MODULUS": pxfill_m,
-			"MULTIPLIER": pxfill_a,
-			"INCREMENT": pxfill_c,
-		},
-		"VolumeInitSettings": {
-			"MODULUS": volumeinit_m,
-			"MULTIPLIER": volumeinit_a,
-			"INCREMENT": volumeinit_c,
-			"SEED": volumeinit_seed,
-		},
-		"VolumeFillSettings": {
-			"MULTIPLIER": volumefill_a,
-			"INCREMENT": volumefill_c,
-		},
-		"DateSettings": {
-			"MODULUS": date_m,
-			"MULTIPLIER": date_a,
-			"INCREMENT": date_c,
-			"SEED": date_seed,
-			"START_DATE": date_start,
-		},
-		"NoteSettings": {
-			"MODULUS": note_m,
-			"MULTIPLIER": note_a,
-			"INCREMENT": note_c,
-		},
-	}
 
 	return parameters_set
 
@@ -174,8 +113,10 @@ def logging_setup(regex_filepath, path_to_log, log_level, log_filemode):
 def workflow(parameters):
 	orders = create_list_orders(parameters)
 
-	for order in orders:
-		print(order)
+	for i in range(len(orders)):
+		print(*orders[i], end='\n')
+		if i == 2000:
+			break
 
 
 if __name__ == "__main__":

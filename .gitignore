@@ -1,3 +1,4 @@
 excel/*.*
 prng-test.py
 __pycache__/*.*
+env/*.*
