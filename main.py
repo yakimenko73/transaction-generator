@@ -14,7 +14,7 @@ def setup():
 	parameters_set = config_setup()
 	logging_setup(
 		regex_filepath, 
-		parameters_set["Path"]["PATH_TO_LOG"], 
+		parameters_set["Path"]["path_to_log"], 
 		*parameters_set["LoggingSettings"].values(),
 	)
 
@@ -25,64 +25,26 @@ def config_setup():
 	config = configparser.ConfigParser()
 	config.read("settings/config.ini")
 
+	parameters_set = { }
+
 	try:
-		parameters_set = {
-			"Path": {
-				"PATH_TO_LOG": config["Path"]["PATH_TO_LOG"],
-			},
-			"LoggingSettings": {
-				"LEVEL": config["LoggingSettings"]["LEVEL"].upper(),
-				"FILEMODE": config["LoggingSettings"]["FILEMODE"].lower(),
-			},
-			"IDSettings": {
-				"MODULUS": int(config["IDSettings"]["MODULUS"]),
-				"MULTIPLIER": int(config["IDSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["IDSettings"]["INCREMENT"]),
-				"SEED": int(config["IDSettings"]["SEED"]),
-			},
-			"SideSettings": {
-				"MODULUS": int(config["SideSettings"]["MODULUS"]),
-				"MULTIPLIER": int(config["SideSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["SideSettings"]["INCREMENT"]),
-			},
-			"InstrumentSettings": {
-				"MODULUS": int(config["InstrumentSettings"]["MODULUS"]),
-				"MULTIPLIER": int(config["InstrumentSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["InstrumentSettings"]["INCREMENT"]),
-			},
-			"StatusSettings": {
-				"MODULUS": int(config["StatusSettings"]["MODULUS"]),
-				"MULTIPLIER": int(config["StatusSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["StatusSettings"]["INCREMENT"]),
-			},
-			"PXFillSettings": {
-				"MODULUS": float(config["PXFillSettings"]["MODULUS"]),
-				"MULTIPLIER": float(config["PXFillSettings"]["MULTIPLIER"]),
-				"INCREMENT": float(config["PXFillSettings"]["INCREMENT"]),
-			},
-			"VolumeInitSettings": {
-				"MODULUS": int(config["VolumeInitSettings"]["MODULUS"]),
-				"MULTIPLIER": int(config["VolumeInitSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["VolumeInitSettings"]["INCREMENT"]),
-				"SEED": int(config["VolumeInitSettings"]["SEED"]),
-			},
-			"VolumeFillSettings": {
-				"MULTIPLIER": int(config["VolumeFillSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["VolumeFillSettings"]["INCREMENT"]),
-			},
-			"DateSettings": {
-				"MODULUS": int(config["DateSettings"]["MODULUS"]),
-				"MULTIPLIER": int(config["DateSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["DateSettings"]["INCREMENT"]),
-				"SEED": int(config["DateSettings"]["SEED"]),
-				"START_DATE": config["DateSettings"]["START_DATE"],
-			},
-			"NoteSettings": {
-				"MODULUS": int(config["NoteSettings"]["MODULUS"]),
-				"MULTIPLIER": int(config["NoteSettings"]["MULTIPLIER"]),
-				"INCREMENT": int(config["NoteSettings"]["INCREMENT"]),
-			},
-		}
+		for section in config:
+			if section != "DEFAULT":
+				parameters_set[section] = {}
+			for field in config[section]:
+				if section == "LoggingSettings":
+					parameters_set[section][field] = config[section][field].lower()
+
+				elif section == "PXFillSettings":
+					parameters_set[section][field] = float(config[section][field])
+
+				elif (section == "DateSettings" and field == "start_date") \
+				or section == "Path":
+					parameters_set[section][field] = config[section][field]
+				else:
+					parameters_set[section][field] = int(config[section][field])
+		if not parameters_set:
+			raise(KeyError)
 	except (KeyError, ValueError, ) as ex:
 		print(f"Incorrect parameters in the config file or the file is missing at all {ex}")
 
@@ -115,7 +77,7 @@ def workflow(parameters):
 
 	for i in range(len(orders)):
 		print(*orders[i], end='\n')
-		if i == 2000:
+		if i == 1799:
 			break
 
 

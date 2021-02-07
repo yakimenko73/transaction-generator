@@ -69,11 +69,11 @@ TAGS = [
 ]
 
 TRUE_LOG_LEVELS = [
-	'CRITICAL', 
-	'ERROR', 
-	'WARNING', 
-	'INFO', 
-	'DEBUG', 
+	'critical', 
+	'error', 
+	'warning', 
+	'info', 
+	'debug', 
 ]
 
 TRUE_FILE_MODES = [
