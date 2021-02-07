@@ -172,28 +172,11 @@ def logging_setup(regex_filepath, path_to_log, log_level, log_filemode):
 
 
 def workflow(parameters):
-	id_ = id_generator(*parameters["IDSettings"].values())
-	sides = side_generator(*parameters["SideSettings"].values(), id_)
-	instruments = instrument_generator(*parameters["InstrumentSettings"].values(), id_)
-	statuses_on_broker = status_generator(*parameters["StatusSettings"].values(), id_)
-	init_prices = pxinit_generator(instruments, sides)
-	fill_prices = pxfill_generator(
-		*parameters["PXFillSettings"].values(), 
-		id_, 
-		init_prices
-	)
-	init_volumes = volumeinit_generator(*parameters["VolumeInitSettings"].values())
-	fill_volumes = volumefill_generator(
-		*parameters["VolumeFillSettings"].values(), 
-		id_, 
-		statuses_on_broker, 
-		init_volumes
-	)
-	dates = date_generator(*parameters["DateSettings"].values())
-	notes = note_generator(*parameters["NoteSettings"].values(), id_)
+	orders = create_list_orders(parameters)
 
-	for i in range(2000):
-		print(notes[i])
+	for order in orders:
+		print(order)
+
 
 if __name__ == "__main__":
 	parameters_set = setup()

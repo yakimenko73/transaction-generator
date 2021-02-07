@@ -41,6 +41,7 @@ def instrument_generator(m, a, c, seeds):
 
 	return list_instruments
 
+
 def status_generator(m, a, c, seeds):
 	list_statuses_on_broker = []
 
@@ -123,23 +124,26 @@ def date_generator(m, a, c, seed, start_date):
 	date = dt.datetime.strptime(start_date, '%d.%m.%Y %H:%M:%S.%f')
 	list_dates = []
 
-	divisor_number = MAX_NUMBER_ORDERS/100
-	number_records = int(divisor_number * ORDERS_CREATED_BEFORE_RECORDING * NUMBER_RECORDS_FIRST_SEGMENT +
-		divisor_number * ORDERS_CREATED_AND_DONE * NUMBER_RECORDS_SECOND_SEGMENT +
-		divisor_number * ORDERS_COMPLETED_AFTER_RECORDING * NUMBER_RECORDS_THIRD_SEGMENT
-	)
+	for order_number in range(MAX_NUMBER_ORDERS):
+		dates_for_order = []
+		if order_number < 599:
+			number_dates = 3
+		elif order_number >= 600 and order_number <= 1799:
+			number_dates = 4
+		else:
+			number_dates = 3
 
-	for i in range(number_records):
-		seed = (a * seed + c) % m
+		for record_number in range(number_dates):
+			seed = (a * seed + c) % m
 
-		if i == 0:
-			list_dates.append(date.strftime('%d.%m.%Y %H:%M:%S.%f')[:-3])
+			date = date + dt.timedelta(milliseconds=seed)
+
+			dates_for_order.append(date.strftime('%d.%m.%Y %H:%M:%S.%f')[:-3])
 		
-		date = date + dt.timedelta(milliseconds=seed)
-
-		list_dates.append(date.strftime('%d.%m.%Y %H:%M:%S.%f')[:-3])
+		list_dates.append(dates_for_order)
 
 	return list_dates
+
 
 def note_generator(m, a, c, seeds):
 	list_notes = []
@@ -154,101 +158,101 @@ def note_generator(m, a, c, seeds):
 	return list_notes
 
 
-def generate_orders(parameters):
+def generate_attributes(parameters):
 	id_ = id_generator(*parameters["IDSettings"].values())
-	sides = side_generator(*parameters["SideSettings"].values())
-	instruments = instrument_generator(*parameters["InstrumentSettings"].values())
-	statuses_on_broker = status_generator(*parameters["StatusSettings"].values())
+	sides = side_generator(*parameters["SideSettings"].values(), id_)
+	instruments = instrument_generator(*parameters["InstrumentSettings"].values(), id_)
+	statuses_on_broker = status_generator(*parameters["StatusSettings"].values(), id_)
+	init_prices = pxinit_generator(instruments, sides)
+	fill_prices = pxfill_generator(
+		*parameters["PXFillSettings"].values(), 
+		id_, 
+		init_prices
+	)
+	init_volumes = volumeinit_generator(*parameters["VolumeInitSettings"].values())
+	fill_volumes = volumefill_generator(
+		*parameters["VolumeFillSettings"].values(), 
+		id_, 
+		statuses_on_broker, 
+		init_volumes
+	)
+	notes = note_generator(*parameters["NoteSettings"].values(), id_)
+	dates = date_generator(*parameters["DateSettings"].values())
 
-	list_orders = [
-		*generate_first_segment(
-			ORDERS_CREATED_BEFORE_RECORDING, 
-			id_, 
-			sides, 
-			instruments, 
-			statuses_on_broker,
-		),
-		*generate_second_segment(ORDERS_CREATED_AND_DONE, 
-			id_, 
-			sides, 
-			instruments, 
-			statuses_on_broker,
-		),
-		*generate_third_segment(ORDERS_COMPLETED_AFTER_RECORDING, 
-			id_, 
-			sides, 
-			instruments, 
-			statuses_on_broker,
-		),
-	]
-
-	return list_orders
+	return id_, sides, instruments, statuses_on_broker, init_prices, fill_prices, init_volumes, fill_volumes, notes, dates
 
 
-def generate_first_segment(percent, id_, sides, instruments, statuses_on_broker):
-	number_records_to_generate = int((MAX_NUMBER_ORDERS/100) * percent)
+def create_list_orders(parameters):
 	list_orders = []
 
-	for order_number in range(number_records_to_generate):
-		order = []
-		for i in range(3):
-			if i == 1:
-				status = statuses_on_broker[order_number]
-			else:
-				status = STATUSES[i+1]
-			record = [
-				id_[order_number],
-				sides[order_number],
-				instruments[order_number],
-				status,
-			]
-			order.append(record)
+	attributes = generate_attributes(parameters)
+
+	for i in range(MAX_NUMBER_ORDERS):
+		if i < 599:
+			number_records = 3
+			segment_number = 1
+		elif i >=600 and i <=1799:
+			number_records = 4
+			segment_number = 2
+		else:
+			number_records = 3
+			segment_number = 3
+
+		order = create_order(attributes[0][i],
+			attributes[1][i],
+			attributes[2][i],
+			attributes[3][i],
+			attributes[4][i],
+			attributes[5][i],
+			attributes[6][i],
+			attributes[7][i],
+			attributes[8][i],
+			dates=attributes[9][i],
+			number_records=number_records,
+			segment_number=segment_number,
+		)
+
 		list_orders.append(order)
 
 	return list_orders
 
 
-def generate_second_segment(percent, id_, sides, instruments, statuses_on_broker):
-	number_records_to_generate = int((MAX_NUMBER_ORDERS/100) * percent)
-	list_orders = []
+def create_order(*attributes, dates, number_records, segment_number):
+	list_records = []
+	id_, side, instrument, status_on_broker, init_price, fill_price, init_volume, fill_volume, note = attributes
 
-	for order_number in range(number_records_to_generate):
-		order = []
-		for i in range(4):
-			if i == 2:
-				status = statuses_on_broker[order_number]
+	for record_number in range(number_records):
+		if number_records == 3 and segment_number == 1:
+			if record_number == 1:
+				status = status_on_broker
 			else:
-				status = STATUSES[i]
-			record = [
-				id_[order_number],
-				sides[order_number],
-				instruments[order_number],
-				status,
-			]
-			order.append(record)
-		list_orders.append(order)
+				status = STATUSES[record_number+1]
 
-	return list_orders
-
-
-def generate_third_segment(percent, id_, sides, instruments, statuses_on_broker):
-	number_records_to_generate = int((MAX_NUMBER_ORDERS/100) * percent)
-	list_orders = []
-
-	for order_number in range(number_records_to_generate):
-		order = []
-		for i in range(3):
-			if i == 2:
-				status = statuses_on_broker[order_number]
+			if status == STATUSES[0] or status == STATUSES[1]:
+				fvolume = 0
 			else:
-				status = STATUSES[i]
-			record = [
-				id_[order_number],
-				sides[order_number],
-				instruments[order_number],
-				status,
-			]
-			order.append(record)
-		list_orders.append(order)
+				fvolume = fill_volume
+		elif number_records == 4:
+			if record_number == 2:
+				status = status_on_broker
+			else:
+				status = STATUSES[record_number]
 
-	return list_orders
+			if status == STATUSES[0] or status == STATUSES[1]:
+				fvolume = 0
+			else:
+				fvolume = fill_volume
+		else:
+			if record_number == 2:
+				status = status_on_broker
+			else:
+				status = STATUSES[record_number]
+
+			if status == STATUSES[0] or status == STATUSES[1]:
+				fvolume = 0
+			else:
+				fvolume = fill_volume
+
+		list_records.append([id_, side, instrument, status, init_price, fill_price, init_volume, fvolume, note, dates[record_number]])
+
+	return list_records
