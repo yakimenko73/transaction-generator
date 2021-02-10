@@ -118,12 +118,12 @@ def volumefill_generator(a, c, seeds, statuses_on_broker, init_volumes):
 
 
 def date_generator(m, a, c, seed, start_date):
-	date = dt.datetime.strptime(start_date, '%d.%m.%Y %H:%M:%S.%f')
+	date = dt.datetime.strptime(start_date, '%d.%m.%Y %H:%M:%S')
 	list_dates = []
 
 	for order_number in range(MAX_NUMBER_ORDERS):
 		dates_for_order = []
-		if order_number < 599:
+		if order_number <= 599:
 			number_dates = NUMBER_RECORDS_FOR_FIRST_SEGMENT
 		elif order_number >= 600 and order_number <= 1799:
 			number_dates = NUMBER_RECORDS_FOR_SECOND_SEGMENT
@@ -133,9 +133,12 @@ def date_generator(m, a, c, seed, start_date):
 		for record_number in range(number_dates):
 			seed = (a * seed + c) % m
 
-			date = date + dt.timedelta(milliseconds=seed)
+			increment_in_seconds = math.trunc(seed)
+			increment_in_milliseconds = str(round(seed - increment_in_seconds, 3)).replace("0", "")
 
-			dates_for_order.append(date.strftime('%d.%m.%Y %H:%M:%S.%f')[:-3])
+			date = date + dt.timedelta(seconds=increment_in_seconds)
+
+			dates_for_order.append(date.strftime('%d.%m.%Y %H:%M:%S') + f"{increment_in_milliseconds}")
 		
 		list_dates.append(dates_for_order)
 

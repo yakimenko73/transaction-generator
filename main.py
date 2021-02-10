@@ -35,7 +35,8 @@ def config_setup():
 				if section == "LoggingSettings":
 					parameters_set[section][field] = config[section][field].lower()
 
-				elif section == "PXFillSettings":
+				elif (section == "DateSettings" and field != "start_date") \
+				or section == "PXFillSettings":
 					parameters_set[section][field] = float(config[section][field])
 
 				elif (section == "DateSettings" and field == "start_date") \
@@ -73,13 +74,10 @@ def logging_setup(regex_filepath, path_to_log, log_level, log_filemode):
 
 
 def workflow(parameters):
-	orders = create_list_orders(parameters)
+	dates = date_generator(*parameters["DateSettings"].values())
 
-	for i in range(len(orders)):
-		print(*orders[i], end='\n')
-		if i == 1799:
-			break
-
+	for i in range(len(dates)):
+		print(dates[i], end='\n')
 
 if __name__ == "__main__":
 	parameters_set = setup()
