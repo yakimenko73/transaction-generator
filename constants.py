@@ -9,13 +9,36 @@ ORDERS_CREATED_AND_DONE = 60
 # percentage of orders completed after the end of the recording
 ORDERS_COMPLETED_AFTER_RECORDING = 10
 
+# the number of orders to generate in each segment
+NUMBER_ORDERS_FOR_FIRST_SEGMENT = 600
+
+NUMBER_ORDERS_FOR_SECOND_SEGMENT = 1200
+
+NUMBER_ORDERS_FOR_THIRD_SEGMENT = 400
+
+# the number of records to generate in each segment
 NUMBER_RECORDS_FOR_FIRST_SEGMENT = 3
 
 NUMBER_RECORDS_FOR_SECOND_SEGMENT = 4
 
 NUMBER_RECORDS_FOR_THIRD_SEGMENT = 3
 
-NUMBER_OF_GENERATED_LINES_FOR_TAGS = 13
+# number of unique generated tag sets
+NUMBER_OF_DIFFERENT_TAGS_SETS = 13
+
+ORDER_ATTRIBUTES = [
+	'ID',
+	'SIDE',
+	'INSTRUMENT',
+	'STATUS',
+	'PX_INIT',
+	'PX_FILL',
+	'VOLUME_INIT',
+	'VOLUME_FILL',
+	'NOTE',
+	'TAGS',
+	'DATE',
+]
 
 SIDES = [
 	"SELL",

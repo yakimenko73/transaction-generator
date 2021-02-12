@@ -79,6 +79,7 @@ def workflow(parameters):
 	for i in range(len(orders)):
 		print(orders[i], end='\n')
 
+
 if __name__ == "__main__":
 	parameters_set = setup()
 	workflow(parameters_set)
