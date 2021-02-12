@@ -74,10 +74,10 @@ def logging_setup(regex_filepath, path_to_log, log_level, log_filemode):
 
 
 def workflow(parameters):
-	dates = date_generator(*parameters["DateSettings"].values())
+	orders = create_list_orders(parameters)
 
-	for i in range(len(dates)):
-		print(dates[i], end='\n')
+	for i in range(len(orders)):
+		print(orders[i], end='\n')
 
 if __name__ == "__main__":
 	parameters_set = setup()

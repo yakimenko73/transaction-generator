@@ -1,4 +1,5 @@
 import math
+import numpy
 import datetime as dt
 
 from constants import *
@@ -133,12 +134,12 @@ def date_generator(m, a, c, seed, start_date):
 		for record_number in range(number_dates):
 			seed = (a * seed + c) % m
 
-			increment_in_seconds = math.trunc(seed)
-			increment_in_milliseconds = str(round(seed - increment_in_seconds, 3)).replace("0", "")
+			increment_in_seconds = str(seed)[0]
+			increment_in_milliseconds = f".{int(seed)}"
 
-			date = date + dt.timedelta(seconds=increment_in_seconds)
+			date = date + dt.timedelta(seconds=int(increment_in_seconds))
 
-			dates_for_order.append(date.strftime('%d.%m.%Y %H:%M:%S') + f"{increment_in_milliseconds}")
+			dates_for_order.append(date.strftime('%d.%m.%Y %H:%M:%S') + increment_in_milliseconds)
 		
 		list_dates.append(dates_for_order)
 
@@ -156,6 +157,31 @@ def note_generator(m, a, c, seeds):
 			list_notes.append(NOTES[10])
 
 	return list_notes
+
+
+def tags_generator(number_m, number_a, number_c, tag_m, tag_a, tag_c, seed):
+	list_tags = []
+	tags_kit = generate_tags_matrix(tag_m, tag_a, tag_c, seed)
+
+	for i in range(MAX_NUMBER_ORDERS):
+		seed = (number_a * seed + number_c) % number_m
+
+		list_tags.append(tags_kit[seed].tolist())
+
+	return list_tags
+
+
+def generate_tags_matrix(m, a, c, seed):
+	matrix_tags = numpy.zeros((NUMBER_OF_GENERATED_LINES_FOR_TAGS, len(TAGS)))
+	matrix_tags = matrix_tags.astype("str")
+
+	for i in range(NUMBER_OF_GENERATED_LINES_FOR_TAGS):
+		for j in range(len(TAGS)):
+			seed = (a * seed + c) % m
+
+			matrix_tags[i][j] = TAGS[j] if seed % 2 else ""
+
+	return matrix_tags
 
 
 def generate_attributes(parameters):
@@ -177,9 +203,10 @@ def generate_attributes(parameters):
 		init_volumes
 	)
 	notes = note_generator(*parameters["NoteSettings"].values(), id_)
+	tags = tags_generator(*parameters["TagSettings"].values())
 	dates = date_generator(*parameters["DateSettings"].values())
 
-	return id_, sides, instruments, statuses_on_broker, init_prices, fill_prices, init_volumes, fill_volumes, notes, dates
+	return id_, sides, instruments, statuses_on_broker, init_prices, fill_prices, init_volumes, fill_volumes, notes, tags, dates
 
 
 def create_list_orders(parameters):
@@ -198,16 +225,17 @@ def create_list_orders(parameters):
 			number_records = NUMBER_RECORDS_FOR_THIRD_SEGMENT
 			is_first_segment = False
 
-		order = create_order(attributes[0][i],
-			attributes[1][i],
-			attributes[2][i],
-			attributes[3][i],
-			attributes[4][i],
-			attributes[5][i],
-			attributes[6][i],
-			attributes[7][i],
-			attributes[8][i],
-			dates=attributes[9][i],
+		order = create_order(attributes[0][i], # id_
+			attributes[1][i], # sides
+			attributes[2][i], # instruments
+			attributes[3][i], # statuses_on_broker
+			attributes[4][i], # init_prices
+			attributes[5][i], # fill_prices
+			attributes[6][i], # init_volumes
+			attributes[7][i], # fill_volumes
+			attributes[8][i], # notes
+			attributes[9][i], # tags
+			dates=attributes[10][i], # dates
 			number_records=number_records,
 			is_first_segment=is_first_segment,
 		)
@@ -216,9 +244,10 @@ def create_list_orders(parameters):
 
 	return list_orders
 
+
 def create_order(*attributes, dates, number_records, is_first_segment):
 	order = []
-	id_, side, instrument, status_on_broker, init_price, fill_price, init_volume, fill_volume, note = attributes
+	id_, side, instrument, status_on_broker, init_price, fill_price, init_volume, fill_volume, note, tags = attributes
 
 	for record_number in range(number_records):
 		record = []
@@ -250,7 +279,8 @@ def create_order(*attributes, dates, number_records, is_first_segment):
 			instrument, status, 
 			init_price, fill_price, 
 			init_volume, fvolume, 
-			note, dates[record_number]
+			note, tags, 
+			dates[record_number],
 		]
 
 		order.append(record)
