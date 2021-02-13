@@ -124,10 +124,9 @@ def date_generator(m, a, c, seed, start_date):
 
 	for order_number in range(MAX_NUMBER_ORDERS):
 		dates_for_order = []
-		if order_number <= NUMBER_ORDERS_FOR_FIRST_SEGMENT-1:
+		if order_number <= MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT-1:
 			number_dates = NUMBER_RECORDS_FOR_FIRST_SEGMENT
-		elif order_number >= NUMBER_ORDERS_FOR_FIRST_SEGMENT \
-		and order_number <= NUMBER_ORDERS_FOR_FIRST_SEGMENT + NUMBER_ORDERS_FOR_SECOND_SEGMENT-1:
+		elif order_number <= MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT-1:
 			number_dates = NUMBER_RECORDS_FOR_SECOND_SEGMENT
 		else:
 			number_dates = NUMBER_RECORDS_FOR_THIRD_SEGMENT
@@ -225,11 +224,10 @@ def create_list_orders(parameters):
 		for number_attribute in range(len(ORDER_ATTRIBUTES)):
 			order_items[ORDER_ATTRIBUTES[number_attribute]] = attributes[number_attribute][order_number]
 
-		if order_number <= NUMBER_ORDERS_FOR_FIRST_SEGMENT-1:
+		if order_number <= MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT-1:
 			number_records = NUMBER_RECORDS_FOR_FIRST_SEGMENT
 			is_first_segment = True
-		elif order_number >= NUMBER_ORDERS_FOR_FIRST_SEGMENT \
-		and order_number <= NUMBER_ORDERS_FOR_FIRST_SEGMENT + NUMBER_ORDERS_FOR_SECOND_SEGMENT-1:
+		elif order_number <= MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT-1:
 			number_records = NUMBER_RECORDS_FOR_SECOND_SEGMENT
 			is_first_segment = False
 		else:
