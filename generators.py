@@ -166,20 +166,19 @@ def tags_generator(number_m, number_a, number_c, tag_m, tag_a, tag_c, seed):
 	for order_number in range(MAX_NUMBER_ORDERS):
 		seed = (number_a * seed + number_c) % number_m
 
-		list_tags.append(tags_kit[seed].tolist())
+		list_tags.append(', '.join([tag for tag in tags_kit[seed] if tag]))
 
 	return list_tags
 
 
 def generate_tags_matrix(m, a, c, seed):
-	matrix_tags = np.zeros((NUMBER_OF_DIFFERENT_TAGS_SETS, len(TAGS)))
-	matrix_tags = matrix_tags.astype("str")
+	matrix_tags = np.zeros((NUMBER_OF_DIFFERENT_TAGS_SETS, len(TAGS))).astype("str")
 
 	for row in range(NUMBER_OF_DIFFERENT_TAGS_SETS):
 		for column in range(len(TAGS)):
 			seed = (a * seed + c) % m
 
-			matrix_tags[row][column] = TAGS[column] if seed % 2 else ""
+			matrix_tags[row][column] = TAGS[column] if seed % 2 else ''
 
 	return matrix_tags
 
