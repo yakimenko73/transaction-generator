@@ -1,0 +1,109 @@
+2021-02-18 15:18:22.567 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:18:22.568 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:18:22.731 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:18:59.453 root DEBUG: Config and logger setup was successful. Number of sections from config: {len(parameters_set.keys())}
+2021-02-18 15:18:59.454 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:18:59.624 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:19:05.641 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:19:05.641 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:19:05.816 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:21:32.223 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:21:32.223 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:21:32.391 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:21:41.503 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:21:41.504 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:21:41.527 root ERROR: Unknown error while generating the list of orders. Ex: name 'init_volues' is not defined
+2021-02-18 15:22:47.011 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:22:47.012 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:22:47.178 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:30:15.529 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:30:15.529 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:30:15.696 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:30:15.696 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:36:00.968 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:36:00.968 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:36:01.134 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:36:51.583 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:36:51.583 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:36:51.744 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:36:51.745 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:36:51.835 root DEBUG: Data was written to the file successfully. Path: csv/orders.csv.
+2021-02-18 15:36:51.835 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:36:51.938 root DEBUG: Data from the file was read successfully. Path: csv/orders.csv.
+2021-02-18 15:42:06.691 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:42:06.691 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:42:06.857 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:42:06.857 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:42:06.944 root DEBUG: Data was written to the file successfully.
+2021-02-18 15:42:06.944 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:42:07.041 root DEBUG: Data from the file was read successfully.
+2021-02-18 15:42:41.670 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:42:41.670 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:42:41.843 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:42:41.843 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:42:41.843 root ERROR: Failed to write data to file. Path: csv/orders.csv. Ex: [Errno 13] Permission denied: 'csv/orders.csv'
+2021-02-18 15:42:41.843 root DEBUG: Data was written to the file successfully.
+2021-02-18 15:42:41.844 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:42:41.942 root DEBUG: Data from the file was read successfully.
+2021-02-18 15:48:31.508 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:48:31.508 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:48:31.675 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:48:31.675 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:48:31.762 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:48:52.358 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:48:52.359 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:48:52.525 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:48:52.526 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:48:52.526 root ERROR: Failed to write data to file. Path: csv/orders.csv. Ex: [Errno 13] Permission denied: 'csv/orders.csv'
+2021-02-18 15:48:52.526 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:49:11.818 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:49:11.818 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:49:11.983 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:49:11.984 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:49:11.984 root ERROR: Failed to write data to file. Path: csv/orders.csv. Ex: [Errno 13] Permission denied: 'csv/orders.csv'
+2021-02-18 15:49:11.984 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:50:15.447 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:50:15.447 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:50:15.633 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:50:15.633 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:50:15.721 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:52:21.134 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:52:21.134 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:52:21.300 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:52:21.300 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:52:21.387 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 15:54:24.378 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 15:54:24.378 root DEBUG: Attempt to generate a list of orders
+2021-02-18 15:54:24.537 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 15:54:24.537 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 15:54:24.625 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 16:07:05.010 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 16:07:05.010 root DEBUG: Attempt to generate a list of orders
+2021-02-18 16:07:05.168 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 16:07:05.168 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 16:07:05.253 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 16:07:33.048 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 16:07:33.048 root DEBUG: Attempt to generate a list of orders
+2021-02-18 16:07:33.216 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 16:07:33.217 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 16:07:33.305 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 16:08:17.707 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 16:08:17.707 root DEBUG: Attempt to generate a list of orders
+2021-02-18 16:08:17.969 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 16:08:17.970 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 16:08:18.051 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 16:08:33.096 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 16:08:33.097 root DEBUG: Attempt to generate a list of orders
+2021-02-18 16:08:33.375 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 16:08:33.376 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 16:08:33.460 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 16:09:50.987 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 16:09:50.987 root DEBUG: Attempt to generate a list of orders
+2021-02-18 16:09:51.258 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 16:09:51.259 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 16:09:51.346 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.
+2021-02-18 16:10:23.149 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-02-18 16:10:23.150 root DEBUG: Attempt to generate a list of orders
+2021-02-18 16:10:23.316 root DEBUG: The list of orders has been generated successfully. Number of orders: 2000
+2021-02-18 16:10:23.316 root DEBUG: An attempt to write a list of orders to a csv file. Path: csv/orders.csv.
+2021-02-18 16:10:23.404 root DEBUG: An attempt to read a list of orders from a csv file. Path: csv/orders.csv.

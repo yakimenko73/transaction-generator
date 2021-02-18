@@ -1,12 +1,13 @@
 import os
 import re
 import csv
+import datetime as dt
 
 import logging
 import configparser
 
-from generators import *
-from constants import TRUE_LOG_LEVELS, TRUE_FILE_MODES, ORDER_ATTRIBUTES
+from generators import create_list_orders
+from constants import * 
 
 
 def setup():
@@ -20,10 +21,11 @@ def setup():
 
 
 def config_setup():
+	path_to_config = 'settings/config.ini'
 	config = configparser.ConfigParser()
-	config.read("settings/config.ini")
+	config.read(path_to_config)
 
-	parameters_set = { }
+	parameters_set = {}
 
 	try:
 		for section in config:
@@ -33,19 +35,22 @@ def config_setup():
 				if section == "LoggingSettings":
 					parameters_set[section][field] = config[section][field].lower()
 
-				elif (section == "DateSettings" and field != "start_date") \
-				or section == "PXFillSettings":
-					parameters_set[section][field] = float(config[section][field])
+				elif section == "DateSettings" or section == "PXFillSettings":
+					if field == "start_date":
+						dt.datetime.strptime(config[section][field], DATE_FORMAT_FOR_DATE_ATTRIBUTE)
+						parameters_set[section][field] = config[section][field]
+					else:
+						parameters_set[section][field] = float(config[section][field])
 
-				elif (section == "DateSettings" and field == "start_date") \
-				or section == "Path":
+				elif section == "Path":
 					parameters_set[section][field] = config[section][field]
 				else:
 					parameters_set[section][field] = int(config[section][field])
 		if not parameters_set:
-			raise(KeyError)
-	except (KeyError, ValueError, ) as ex:
-		print(f"Incorrect parameters in the config file or the file is missing at all {ex}")
+			raise FileNotFoundError("Config file not found")
+	except (ValueError, FileNotFoundError, ) as ex:
+		print("Incorrect parameters in the config file or the file is missing at all. " +
+			f"Path: {path_to_config}. Ex: {ex}")
 
 		os._exit(0)
 
@@ -59,51 +64,71 @@ def logging_setup(path_to_log, log_level, log_filemode):
 	if not log_filemode in TRUE_FILE_MODES:
 		log_filemode = 'a'
 
-	create_file_path(path_to_log)
+	path = create_file_path(path_to_log)
 
-	logging.basicConfig(filename=path_to_log, 
+	logging.basicConfig(filename=path, 
 		level=log_level,
 		filemode=log_filemode, 
-		format='%(asctime)s.%(msecs)03d %(name)s %(levelname)s: %(message)s',
-		datefmt='%Y-%m-%d %H:%M:%S')
-
-
-def create_file_path(path):
-	pathdir = ''.join(re.findall("\w+/", path))
-	if pathdir:
-		if not os.path.exists(pathdir):
-			os.makedirs(pathdir)
+		format=MESSAGE_FORMAT_FOR_LOGGER,
+		datefmt=DATE_FORMAT_FOR_LOGGER)
 
 
 def workflow(parameters):
-	orders = create_list_orders(parameters)
-	path_to_csv = parameters["Path"]["path_to_csv"]
+	logging.debug("Attempt to generate a list of orders")
+	list_orders = create_list_orders(parameters)
+	logging.debug(f"The list of orders has been generated successfully. Number of orders: {len(list_orders)}")
 
-	create_file_path(path_to_csv)
+	path = create_file_path(parameters["Path"]["path_to_csv"])
 
-	write_csv(path_to_csv, orders)
-	read_csv(path_to_csv)
+	logging.debug(f"An attempt to write a list of orders to a csv file. Path: {path}.")
+	write_csv(path, list_orders)
+
+	logging.debug(f"An attempt to read a list of orders from a csv file. Path: {path}.")
+	read_csv(path)
 
 
-def write_csv(filename, orders):
-	with open(filename, "w") as f:
-		csv_f = csv.writer(f)
-		csv_f.writerow(ORDER_ATTRIBUTES)
+def create_file_path(path):
+	pathdir = ''.join(re.findall(r"\w+/", path))
+	if pathdir:
+		if not os.path.exists(pathdir):
+			try:
+				os.makedirs(pathdir)
+			except OSError as ex:
+				logging.warning("Failed to create file in the selected path. " +
+					f"Created a file in the executing directory. Path: {path}. Ex: {ex}")
+				path = os.path.basename(path)
+	return path
 
-		for order in orders:
-			for record in order:
-				csv_f.writerow(record)
+
+def write_csv(filename, list_orders):
+	try:
+		with open(filename, "w") as f:
+			csv_f = csv.writer(f)
+			csv_f.writerow(ORDER_ATTRIBUTES)
+
+			for order in list_orders:
+				for record in order:
+					csv_f.writerow(record)
+	except OSError as ex:
+		logging.error(f"Failed to write data to file. Path: {filename}. Ex: {ex}")
+		return 0
 
 
 def read_csv(filename):
-	with open(filename, "r", newline="") as f:
-		csv_f = csv.reader(f)
+	try:
+		with open(filename, "r", newline="") as f:
+			csv_f = csv.reader(f)
 
-		for row in csv_f:
-			if row:
-				print('{:<13}{:<7}{:<13}{:<14}{:<12}{:<12}{:<14}{:<14}{:<10}{:<64}{:<26}'.format(*row))
+			for row in csv_f:
+				if row:
+					print(FORMAT_DISPLAYING_ORDERS.format(*row))
+	except OSError as ex:
+		logging.error(f"Failed to read data from file. Path: {filename}. Example: {ex}")
+		return 0
 
 
 if __name__ == "__main__":
 	parameters_set = setup()
+	logging.debug("Config and logger setup was successful. " + 
+		f"Number of sections from config: {len(parameters_set.keys())}")
 	workflow(parameters_set)

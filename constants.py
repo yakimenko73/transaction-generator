@@ -10,21 +10,29 @@ ORDERS_CREATED_AND_DONE = 60
 ORDERS_COMPLETED_AFTER_RECORDING = 10
 
 # the number of orders to generate in each segment
-MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT = 600
+MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT = int((MAX_NUMBER_ORDERS/100) * ORDERS_CREATED_BEFORE_RECORDING)
 
-MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT = 1800
-
-MAX_LIMIT_ORDERS_FOR_THIRD_SEGMENT = 2000
+MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT = int((MAX_NUMBER_ORDERS/100) * ORDERS_CREATED_AND_DONE + MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT)
 
 # the number of records to generate in each segment
-NUMBER_RECORDS_FOR_FIRST_SEGMENT = 3
+NUMBER_OF_RECORDS_FOR_FIRST_SEGMENT = 3
 
-NUMBER_RECORDS_FOR_SECOND_SEGMENT = 4
+NUMBER_OF_RECORDS_FOR_SECOND_SEGMENT = 4
 
-NUMBER_RECORDS_FOR_THIRD_SEGMENT = 3
+NUMBER_OF_RECORDS_FOR_THIRD_SEGMENT = 3
 
 # number of unique generated tag sets
 NUMBER_OF_DIFFERENT_TAGS_SETS = 13
+
+DATE_FORMAT_FOR_LOGGER = '%Y-%m-%d %H:%M:%S'
+
+MESSAGE_FORMAT_FOR_LOGGER = '%(asctime)s.%(msecs)03d %(name)s %(levelname)s: %(message)s'
+
+# date format for date column in list orders
+DATE_FORMAT_FOR_DATE_ATTRIBUTE = '%d.%m.%Y %H:%M:%S'
+
+# format for displaying the list of orders in the console
+FORMAT_DISPLAYING_ORDERS = '{:<13}{:<7}{:<13}{:<14}{:<12}{:<12}{:<14}{:<14}{:<10}{:<64}{:<26}'
 
 ORDER_ATTRIBUTES = [
 	'ID',
@@ -93,6 +101,7 @@ TAGS = [
 	"TRANSFER",
 ]
 
+# list of correct log levels
 TRUE_LOG_LEVELS = [
 	'critical', 
 	'error', 
@@ -101,6 +110,7 @@ TRUE_LOG_LEVELS = [
 	'debug', 
 ]
 
+# list of correct file modes
 TRUE_FILE_MODES = [
 	'r',
 	'w',

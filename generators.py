@@ -63,7 +63,7 @@ def pxinit_generator(instruments, sides):
 	for order_number in range(MAX_NUMBER_ORDERS):
 		for j in range(len(INSTRUMENTS)):
 			if INSTRUMENTS[j][0] == instruments[order_number]:
-				if sides[order_number] == "BUY":
+				if sides[order_number] == SIDES[1]:
 					list_prices.append(INSTRUMENTS[j][1])
 				else:
 					list_prices.append(INSTRUMENTS[j][2])
@@ -121,27 +121,22 @@ def volumefill_generator(a, c, seeds, statuses_on_broker, init_volumes):
 
 
 def date_generator(m, a, c, seed, start_date):
-	date = dt.datetime.strptime(start_date, '%d.%m.%Y %H:%M:%S')
+	date = dt.datetime.strptime(start_date, DATE_FORMAT_FOR_DATE_ATTRIBUTE)
 	list_dates = []
 
 	for order_number in range(MAX_NUMBER_ORDERS):
 		dates_for_order = []
-		if order_number < MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT:
-			number_dates = NUMBER_RECORDS_FOR_FIRST_SEGMENT
-		elif order_number < MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT:
-			number_dates = NUMBER_RECORDS_FOR_SECOND_SEGMENT
-		else:
-			number_dates = NUMBER_RECORDS_FOR_THIRD_SEGMENT
+		number_of_dates, _ = define_number_of_records_for_order(order_number)
 
-		for record_number in range(number_dates):
+		for record_number in range(number_of_dates):
 			seed = (a * seed + c) % m
 
 			increment_in_seconds = str(seed)[0]
-			increment_in_milliseconds = f".{int(seed)}"
+			increment_in_milliseconds = f"{int(seed)}".zfill(3)
 
 			date = date + dt.timedelta(seconds=int(increment_in_seconds))
 
-			dates_for_order.append(date.strftime('%d.%m.%Y %H:%M:%S') + increment_in_milliseconds)
+			dates_for_order.append(date.strftime(DATE_FORMAT_FOR_DATE_ATTRIBUTE) + f".{increment_in_milliseconds}")
 		
 		list_dates.append(dates_for_order)
 
@@ -222,22 +217,11 @@ def create_list_orders(parameters):
 	attributes = generate_order_attributes(parameters)
 
 	for order_number in range(MAX_NUMBER_ORDERS):
-		order_items = {}
-		for number_attribute in range(len(ORDER_ATTRIBUTES)):
-			attribute_name = ORDER_ATTRIBUTES[number_attribute]
-			order_items[attribute_name] = attributes[number_attribute][order_number]
+		order_items = define_order_items(order_number, attributes)
 
-		if order_number < MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT:
-			number_records = NUMBER_RECORDS_FOR_FIRST_SEGMENT
-			is_first_segment = True
-		elif order_number < MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT:
-			number_records = NUMBER_RECORDS_FOR_SECOND_SEGMENT
-			is_first_segment = False
-		else:
-			number_records = NUMBER_RECORDS_FOR_THIRD_SEGMENT
-			is_first_segment = False
+		number_of_records, is_first_segment = define_number_of_records_for_order(order_number)
 
-		order = create_order(number_records,
+		order = create_order(number_of_records,
 			is_first_segment,
 			order_items,
 		)
@@ -247,10 +231,10 @@ def create_list_orders(parameters):
 	return list_orders
 
 
-def create_order(number_records, is_first_segment, order_items):
+def create_order(number_of_records, is_first_segment, order_items):
 	order = []
 
-	for record_number in range(number_records):
+	for record_number in range(number_of_records):
 		record = []
 		if is_first_segment:
 			if record_number == 1:
@@ -281,3 +265,25 @@ def create_order(number_records, is_first_segment, order_items):
 		order.append(record)
 
 	return order
+
+
+def define_number_of_records_for_order(order_number):
+	if order_number < MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT:
+		number_of_records = NUMBER_OF_RECORDS_FOR_FIRST_SEGMENT
+		is_first_segment = True
+	elif order_number < MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT:
+		number_of_records = NUMBER_OF_RECORDS_FOR_SECOND_SEGMENT
+		is_first_segment = False
+	else:
+		number_of_records = NUMBER_OF_RECORDS_FOR_THIRD_SEGMENT
+		is_first_segment = False
+
+	return number_of_records, is_first_segment
+
+
+def define_order_items(order_number, attributes):
+	order_items = {}
+	for number_attribute, attribute_name in enumerate(ORDER_ATTRIBUTES):
+		order_items[attribute_name] = attributes[number_attribute][order_number]
+
+	return order_items
