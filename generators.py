@@ -70,12 +70,14 @@ def pxinit_generator(instruments, sides):
 	return list_prices
 
 
-def pxfill_generator(m, a, c, seeds, init_prices):
+def pxfill_generator(m, a, c, seeds, init_prices, statuses_on_broker):
 	list_prices = []
 
 	for order_number in range(MAX_NUMBER_ORDERS):
 		seed = round((a * int(seeds[order_number], 16) + c) % m, 5)
-		if seed < 0.0005:
+		if statuses_on_broker[order_number] == STATUSES[2][2]:
+			fill_price = 0
+		elif seed < 0.0005:
 			fill_price = init_prices[order_number] + seed
 		else:
 			fill_price = init_prices[order_number] - seed
@@ -124,9 +126,9 @@ def date_generator(m, a, c, seed, start_date):
 
 	for order_number in range(MAX_NUMBER_ORDERS):
 		dates_for_order = []
-		if order_number <= MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT-1:
+		if order_number < MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT:
 			number_dates = NUMBER_RECORDS_FOR_FIRST_SEGMENT
-		elif order_number <= MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT-1:
+		elif order_number < MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT:
 			number_dates = NUMBER_RECORDS_FOR_SECOND_SEGMENT
 		else:
 			number_dates = NUMBER_RECORDS_FOR_THIRD_SEGMENT
@@ -193,6 +195,7 @@ def generate_order_attributes(parameters):
 		*parameters["PXFillSettings"].values(), 
 		id_, 
 		init_prices,
+		statuses_on_broker, 
 	)
 	init_volumes = volumeinit_generator(*parameters["VolumeInitSettings"].values())
 	fill_volumes = volumefill_generator(
@@ -221,12 +224,13 @@ def create_list_orders(parameters):
 	for order_number in range(MAX_NUMBER_ORDERS):
 		order_items = {}
 		for number_attribute in range(len(ORDER_ATTRIBUTES)):
-			order_items[ORDER_ATTRIBUTES[number_attribute]] = attributes[number_attribute][order_number]
+			attribute_name = ORDER_ATTRIBUTES[number_attribute]
+			order_items[attribute_name] = attributes[number_attribute][order_number]
 
-		if order_number <= MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT-1:
+		if order_number < MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT:
 			number_records = NUMBER_RECORDS_FOR_FIRST_SEGMENT
 			is_first_segment = True
-		elif order_number <= MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT-1:
+		elif order_number < MAX_LIMIT_ORDERS_FOR_SECOND_SEGMENT:
 			number_records = NUMBER_RECORDS_FOR_SECOND_SEGMENT
 			is_first_segment = False
 		else:
@@ -260,13 +264,15 @@ def create_order(number_records, is_first_segment, order_items):
 
 		if status == STATUSES[0] or status == STATUSES[1]:
 			volume_fill = 0
+			price_fill = 0
 		else:
 			volume_fill = order_items["VOLUME_FILL"]
+			price_fill = order_items["PX_FILL"]
 
 		record = [
 			order_items["ID"], order_items["SIDE"], 
 			order_items["INSTRUMENT"], status, 
-			order_items["PX_INIT"], order_items["PX_FILL"], 
+			order_items["PX_INIT"], price_fill, 
 			order_items["VOLUME_INIT"], volume_fill, 
 			order_items["NOTE"], order_items["TAGS"], 
 			order_items["DATE"][record_number],
