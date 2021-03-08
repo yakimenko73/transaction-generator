@@ -78,7 +78,13 @@ def workflow(parameters):
 	list_orders = create_list_orders(parameters)
 	logging.debug(f"The list of orders has been generated successfully. Number of orders: {len(list_orders)}")
 
-	path = create_file_path(parameters["Path"]["path_to_csv"])
+	try:
+		path_to_csv = parameters["Path"]["path_to_csv"]
+	except KeyError as ex:
+		logging.warning("The path to the csv file is missing in the config. Creating a file in the executing directory.")
+		path_to_csv = "orders.csv"
+
+	path = create_file_path(path_to_csv)
 
 	logging.debug(f"An attempt to write a list of orders to a csv file. Path: {path}.")
 	write_csv(path, list_orders)
@@ -123,7 +129,7 @@ def read_csv(filename):
 				if row:
 					print(FORMAT_DISPLAYING_ORDERS.format(*row))
 	except OSError as ex:
-		logging.error(f"Failed to read data from file. Path: {filename}. Example: {ex}")
+		logging.error(f"Failed to read data from file. Path: {filename}. Ex: {ex}")
 		return 0
 
 
