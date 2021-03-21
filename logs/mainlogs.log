@@ -1,0 +1,192 @@
+2021-03-21 12:25:08.886 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:02:12.912 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:02:19.891 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:02:32.772 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:45:30.162 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:45:57.344 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:46:39.107 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:46:41.949 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:46:43.835 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:47:48.297 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:48:32.856 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:48:44.994 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:58:33.549 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 14:58:47.156 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:05:00.249 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:05:06.446 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:18:12.562 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:18:29.911 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:18:29.911 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:18:29.911 root INFO: Forced generation of the id attribute
+2021-03-21 15:20:03.674 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:20:03.674 root INFO: Generating the "id" attribute
+2021-03-21 15:20:03.676 root INFO: Generating the "side" attribute
+2021-03-21 15:20:11.963 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:20:11.963 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:20:11.963 root INFO: Forced generation of the id attribute
+2021-03-21 15:20:11.963 root INFO: Generating the "id" attribute
+2021-03-21 15:20:11.965 root INFO: Generating the "side" attribute
+2021-03-21 15:31:58.288 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:31:58.288 root INFO: Generating the "id" attribute
+2021-03-21 15:31:58.290 root INFO: Generating the "side" attribute
+2021-03-21 15:32:01.761 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:32:01.761 root INFO: Generating the "id" attribute
+2021-03-21 15:32:01.763 root INFO: Generating the "side" attribute
+2021-03-21 15:32:01.766 root INFO: Generating the "instrument" attribute
+2021-03-21 15:32:45.785 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:32:45.786 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:32:45.786 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:32:45.786 root INFO: Generating the "id" attribute
+2021-03-21 15:32:45.790 root INFO: Generating the "side" attribute
+2021-03-21 15:32:45.792 root INFO: Generating the "instrument" attribute
+2021-03-21 15:32:52.972 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:32:52.972 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:32:52.972 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:32:52.972 root INFO: Generating the "id" attribute
+2021-03-21 15:32:52.974 root INFO: Generating the "side" attribute
+2021-03-21 15:32:52.976 root INFO: Generating the "instrument" attribute
+2021-03-21 15:32:52.979 root WARNING: Unable to generate "px_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:32:52.979 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:32:52.979 root INFO: Generating the "id" attribute
+2021-03-21 15:32:52.981 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:32:52.981 root INFO: Generating the "status" attribute
+2021-03-21 15:32:52.984 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:32:52.984 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:33:17.470 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:33:17.470 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:33:17.470 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:33:17.470 root INFO: Generating the "id" attribute
+2021-03-21 15:33:17.472 root INFO: Generating the "side" attribute
+2021-03-21 15:33:17.475 root INFO: Generating the "instrument" attribute
+2021-03-21 15:33:17.477 root WARNING: Unable to generate "px_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:33:17.477 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:33:17.478 root INFO: Generating the "id" attribute
+2021-03-21 15:33:17.480 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:33:17.480 root INFO: Generating the "status" attribute
+2021-03-21 15:33:17.482 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:33:17.482 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:33:17.488 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:33:22.741 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:33:22.741 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:33:22.741 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:33:22.741 root INFO: Generating the "id" attribute
+2021-03-21 15:33:22.743 root INFO: Generating the "side" attribute
+2021-03-21 15:33:22.746 root INFO: Generating the "instrument" attribute
+2021-03-21 15:33:22.749 root WARNING: Unable to generate "px_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:33:22.749 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:33:22.749 root INFO: Generating the "id" attribute
+2021-03-21 15:33:22.751 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:33:22.751 root INFO: Generating the "status" attribute
+2021-03-21 15:33:22.754 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:33:22.754 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:33:22.759 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:34:38.697 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:34:38.698 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:34:38.698 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:34:38.698 root INFO: Generating the "id" attribute
+2021-03-21 15:34:38.700 root INFO: Generating the "side" attribute
+2021-03-21 15:34:38.702 root INFO: Generating the "instrument" attribute
+2021-03-21 15:34:38.705 root WARNING: Unable to generate "px_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:34:38.705 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:34:38.705 root INFO: Generating the "id" attribute
+2021-03-21 15:34:38.707 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:34:38.707 root INFO: Generating the "status" attribute
+2021-03-21 15:34:38.710 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:34:38.710 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:34:38.716 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:34:55.331 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:34:55.331 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:34:55.331 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:34:55.331 root INFO: Generating the "id" attribute
+2021-03-21 15:34:55.334 root INFO: Generating the "side" attribute
+2021-03-21 15:34:55.336 root INFO: Generating the "instrument" attribute
+2021-03-21 15:34:55.340 root WARNING: Unable to generate "px_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:34:55.340 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:34:55.340 root INFO: Generating the "id" attribute
+2021-03-21 15:34:55.342 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:34:55.342 root INFO: Generating the "status" attribute
+2021-03-21 15:34:55.345 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:34:55.345 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:34:55.350 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:38:20.215 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:38:20.215 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:38:20.215 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:38:20.215 root INFO: Generating the "id" attribute
+2021-03-21 15:38:20.217 root INFO: Generating the "side" attribute
+2021-03-21 15:38:20.220 root INFO: Generating the "instrument" attribute
+2021-03-21 15:38:20.223 root WARNING: Unable to generate "volume_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:38:20.223 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:38:20.223 root INFO: Generating the "id" attribute
+2021-03-21 15:38:20.225 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:38:20.225 root INFO: Generating the "status" attribute
+2021-03-21 15:38:20.228 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:38:20.228 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:38:20.234 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:38:59.440 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:38:59.441 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:38:59.441 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:38:59.441 root INFO: Generating the "id" attribute
+2021-03-21 15:38:59.443 root INFO: Generating the "side" attribute
+2021-03-21 15:38:59.445 root INFO: Generating the "instrument" attribute
+2021-03-21 15:38:59.448 root WARNING: Unable to generate "px_fill" attribute because "id", "px_init" or "status" attributes was not generated
+2021-03-21 15:38:59.448 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:38:59.448 root INFO: Generating the "id" attribute
+2021-03-21 15:38:59.450 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:38:59.450 root INFO: Generating the "status" attribute
+2021-03-21 15:38:59.453 root INFO: Forced generation of the "px_init" attribute
+2021-03-21 15:38:59.453 root INFO: Generating the "px_init" attribute
+2021-03-21 15:38:59.460 root INFO: Generating the "px_fill" attribute
+2021-03-21 15:38:59.467 root WARNING: Unable to generate "volume_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:38:59.467 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:38:59.467 root INFO: Generating the "id" attribute
+2021-03-21 15:38:59.469 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:38:59.469 root INFO: Generating the "status" attribute
+2021-03-21 15:38:59.472 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:38:59.472 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:38:59.477 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:43:10.663 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:43:10.663 root WARNING: Unable to generate "side" attribute because "id" attribute was not generated
+2021-03-21 15:43:10.663 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:43:10.664 root INFO: Generating the "id" attribute
+2021-03-21 15:43:10.666 root INFO: Generating the "side" attribute
+2021-03-21 15:43:10.668 root INFO: Generating the "instrument" attribute
+2021-03-21 15:43:10.671 root WARNING: Unable to generate "px_fill" attribute because "id", "px_init" or "status" attributes was not generated
+2021-03-21 15:43:10.671 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:43:10.671 root INFO: Generating the "id" attribute
+2021-03-21 15:43:10.673 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:43:10.673 root INFO: Generating the "status" attribute
+2021-03-21 15:43:10.676 root INFO: Forced generation of the "px_init" attribute
+2021-03-21 15:43:10.676 root INFO: Generating the "px_init" attribute
+2021-03-21 15:43:10.682 root INFO: Generating the "px_fill" attribute
+2021-03-21 15:43:10.689 root WARNING: Unable to generate "volume_fill" attribute because "id", "status" or "volume_init" attributes was not generated
+2021-03-21 15:43:10.689 root INFO: Forced generation of the "id" attribute
+2021-03-21 15:43:10.689 root INFO: Generating the "id" attribute
+2021-03-21 15:43:10.691 root INFO: Forced generation of the "status" attribute
+2021-03-21 15:43:10.691 root INFO: Generating the "status" attribute
+2021-03-21 15:43:10.694 root INFO: Forced generation of the "volume_init" attribute
+2021-03-21 15:43:10.694 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:43:10.699 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:46:45.588 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:46:45.588 root INFO: Generating the "id" attribute
+2021-03-21 15:46:45.590 root INFO: Generating the "side" attribute
+2021-03-21 15:46:45.593 root INFO: Generating the "instrument" attribute
+2021-03-21 15:46:45.596 root INFO: Generating the "status" attribute
+2021-03-21 15:46:45.599 root INFO: Generating the "px_init" attribute
+2021-03-21 15:46:45.605 root INFO: Generating the "px_fill" attribute
+2021-03-21 15:46:45.612 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:46:45.617 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:46:45.623 root INFO: Generating the "date" attribute
+2021-03-21 15:46:45.744 root INFO: Generating the "note" attribute
+2021-03-21 15:46:45.747 root INFO: Generating the "tags" attribute
+2021-03-21 15:49:24.231 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 15:49:24.231 root INFO: Generating the "id" attribute
+2021-03-21 15:49:24.233 root INFO: Generating the "side" attribute
+2021-03-21 15:49:24.236 root INFO: Generating the "instrument" attribute
+2021-03-21 15:49:24.239 root INFO: Generating the "status" attribute
+2021-03-21 15:49:24.241 root INFO: Generating the "px_init" attribute
+2021-03-21 15:49:24.248 root INFO: Generating the "px_fill" attribute
+2021-03-21 15:49:24.254 root INFO: Generating the "volume_init" attribute
+2021-03-21 15:49:24.260 root INFO: Generating the "volume_fill" attribute
+2021-03-21 15:49:24.266 root INFO: Generating the "date" attribute
+2021-03-21 15:49:24.374 root INFO: Generating the "note" attribute
+2021-03-21 15:49:24.377 root INFO: Generating the "tags" attribute
