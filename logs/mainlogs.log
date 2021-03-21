@@ -1046,3 +1046,183 @@
 2021-03-21 17:21:47.680 root INFO: Generating the "volume_fill" attribute
 2021-03-21 17:21:47.686 root INFO: Generating the "note" attribute
 2021-03-21 17:21:47.689 root INFO: Generating the "tags" attribute
+2021-03-21 17:29:49.284 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:29:49.285 root INFO: Generating the "id" attribute
+2021-03-21 17:29:49.287 root INFO: Generating the "side" attribute
+2021-03-21 17:29:49.290 root INFO: Generating the "instrument" attribute
+2021-03-21 17:29:49.292 root INFO: Generating the "status" attribute
+2021-03-21 17:29:49.295 root INFO: Generating the "px_init" attribute
+2021-03-21 17:29:49.302 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:29:49.309 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:29:49.314 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:29:49.320 root INFO: Generating the "note" attribute
+2021-03-21 17:29:49.323 root INFO: Generating the "tags" attribute
+2021-03-21 17:29:54.100 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:29:54.100 root INFO: Generating the "id" attribute
+2021-03-21 17:29:54.102 root INFO: Generating the "side" attribute
+2021-03-21 17:29:54.105 root INFO: Generating the "instrument" attribute
+2021-03-21 17:29:54.107 root INFO: Generating the "status" attribute
+2021-03-21 17:29:54.110 root INFO: Generating the "px_init" attribute
+2021-03-21 17:29:54.116 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:29:54.123 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:29:54.128 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:29:54.134 root INFO: Generating the "note" attribute
+2021-03-21 17:29:54.136 root INFO: Generating the "tags" attribute
+2021-03-21 17:29:56.876 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:29:56.876 root INFO: Generating the "id" attribute
+2021-03-21 17:29:56.878 root INFO: Generating the "side" attribute
+2021-03-21 17:29:56.882 root INFO: Generating the "instrument" attribute
+2021-03-21 17:29:56.884 root INFO: Generating the "status" attribute
+2021-03-21 17:29:56.887 root INFO: Generating the "px_init" attribute
+2021-03-21 17:29:56.893 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:29:56.900 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:29:56.906 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:29:56.911 root INFO: Generating the "note" attribute
+2021-03-21 17:29:56.914 root INFO: Generating the "tags" attribute
+2021-03-21 17:31:04.161 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:31:04.161 root INFO: Generating the "id" attribute
+2021-03-21 17:31:04.164 root INFO: Generating the "side" attribute
+2021-03-21 17:31:04.166 root INFO: Generating the "instrument" attribute
+2021-03-21 17:31:04.169 root INFO: Generating the "status" attribute
+2021-03-21 17:31:04.172 root INFO: Generating the "px_init" attribute
+2021-03-21 17:31:04.178 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:31:04.185 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:31:04.190 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:31:04.198 root INFO: Generating the "note" attribute
+2021-03-21 17:31:04.201 root INFO: Generating the "tags" attribute
+2021-03-21 17:31:15.937 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:31:15.937 root INFO: Generating the "id" attribute
+2021-03-21 17:31:15.939 root INFO: Generating the "side" attribute
+2021-03-21 17:31:15.942 root INFO: Generating the "instrument" attribute
+2021-03-21 17:31:15.944 root INFO: Generating the "status" attribute
+2021-03-21 17:31:15.947 root INFO: Generating the "px_init" attribute
+2021-03-21 17:31:15.954 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:31:15.962 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:31:15.967 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:31:15.973 root INFO: Generating the "note" attribute
+2021-03-21 17:31:15.976 root INFO: Generating the "tags" attribute
+2021-03-21 17:37:06.925 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:37:06.925 root INFO: Generating the "id" attribute
+2021-03-21 17:37:06.927 root INFO: Generating the "side" attribute
+2021-03-21 17:37:06.930 root INFO: Generating the "instrument" attribute
+2021-03-21 17:37:06.933 root INFO: Generating the "status" attribute
+2021-03-21 17:37:06.935 root INFO: Generating the "px_init" attribute
+2021-03-21 17:37:06.942 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:37:06.948 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:37:06.954 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:37:06.960 root INFO: Generating the "note" attribute
+2021-03-21 17:37:06.964 root INFO: Generating the "tags" attribute
+2021-03-21 17:37:41.188 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:37:41.188 root INFO: Generating the "id" attribute
+2021-03-21 17:37:41.190 root INFO: Generating the "side" attribute
+2021-03-21 17:37:41.192 root INFO: Generating the "instrument" attribute
+2021-03-21 17:37:41.195 root INFO: Generating the "status" attribute
+2021-03-21 17:37:41.198 root INFO: Generating the "px_init" attribute
+2021-03-21 17:37:41.205 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:37:41.211 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:37:41.216 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:37:41.222 root INFO: Generating the "note" attribute
+2021-03-21 17:37:41.225 root INFO: Generating the "tags" attribute
+2021-03-21 17:39:07.702 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:39:07.703 root INFO: Generating the "id" attribute
+2021-03-21 17:39:07.705 root INFO: Generating the "side" attribute
+2021-03-21 17:39:07.707 root INFO: Generating the "instrument" attribute
+2021-03-21 17:39:07.710 root INFO: Generating the "status" attribute
+2021-03-21 17:39:07.713 root INFO: Generating the "px_init" attribute
+2021-03-21 17:39:07.720 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:39:07.727 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:39:07.733 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:39:07.739 root INFO: Generating the "note" attribute
+2021-03-21 17:39:07.741 root INFO: Generating the "tags" attribute
+2021-03-21 17:39:16.172 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:39:16.172 root INFO: Generating the "id" attribute
+2021-03-21 17:39:16.174 root INFO: Generating the "side" attribute
+2021-03-21 17:39:16.177 root INFO: Generating the "instrument" attribute
+2021-03-21 17:39:16.180 root INFO: Generating the "status" attribute
+2021-03-21 17:39:16.183 root INFO: Generating the "px_init" attribute
+2021-03-21 17:39:16.190 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:39:16.197 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:39:16.203 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:39:16.209 root INFO: Generating the "note" attribute
+2021-03-21 17:39:16.212 root INFO: Generating the "tags" attribute
+2021-03-21 17:39:57.833 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:39:57.833 root INFO: Generating the "id" attribute
+2021-03-21 17:39:57.835 root INFO: Generating the "side" attribute
+2021-03-21 17:39:57.838 root INFO: Generating the "instrument" attribute
+2021-03-21 17:40:08.242 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:40:08.242 root INFO: Generating the "id" attribute
+2021-03-21 17:40:08.244 root INFO: Generating the "side" attribute
+2021-03-21 17:40:08.247 root INFO: Generating the "instrument" attribute
+2021-03-21 17:40:48.494 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:40:48.494 root INFO: Generating the "id" attribute
+2021-03-21 17:40:48.496 root INFO: Generating the "side" attribute
+2021-03-21 17:40:48.499 root INFO: Generating the "instrument" attribute
+2021-03-21 17:41:58.012 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:41:58.012 root INFO: Generating the "id" attribute
+2021-03-21 17:41:58.014 root INFO: Generating the "side" attribute
+2021-03-21 17:41:58.017 root INFO: Generating the "instrument" attribute
+2021-03-21 17:41:58.020 root INFO: Generating the "note" attribute
+2021-03-21 17:42:33.964 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:42:33.964 root INFO: Generating the "id" attribute
+2021-03-21 17:42:33.973 root INFO: Generating the "side" attribute
+2021-03-21 17:42:33.976 root INFO: Generating the "instrument" attribute
+2021-03-21 17:42:33.978 root INFO: Generating the "note" attribute
+2021-03-21 17:43:32.961 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:43:32.961 root INFO: Generating the "id" attribute
+2021-03-21 17:43:32.963 root INFO: Generating the "side" attribute
+2021-03-21 17:43:32.965 root INFO: Generating the "instrument" attribute
+2021-03-21 17:43:32.968 root INFO: Generating the "note" attribute
+2021-03-21 17:43:35.248 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:43:35.248 root INFO: Generating the "id" attribute
+2021-03-21 17:43:35.250 root INFO: Generating the "side" attribute
+2021-03-21 17:43:35.253 root INFO: Generating the "instrument" attribute
+2021-03-21 17:43:35.256 root INFO: Generating the "note" attribute
+2021-03-21 17:43:35.258 root INFO: Generating the "date" attribute
+2021-03-21 17:44:29.739 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:44:29.739 root INFO: Generating the "id" attribute
+2021-03-21 17:44:29.741 root INFO: Generating the "side" attribute
+2021-03-21 17:44:29.744 root INFO: Generating the "instrument" attribute
+2021-03-21 17:44:29.747 root INFO: Generating the "status" attribute
+2021-03-21 17:44:29.749 root INFO: Generating the "px_init" attribute
+2021-03-21 17:44:29.756 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:44:29.763 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:44:29.768 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:44:29.774 root INFO: Generating the "note" attribute
+2021-03-21 17:44:29.776 root INFO: Generating the "tags" attribute
+2021-03-21 17:44:29.791 root INFO: Generating the "date" attribute
+2021-03-21 17:45:50.785 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:45:50.785 root INFO: Generating the "id" attribute
+2021-03-21 17:45:50.787 root INFO: Generating the "side" attribute
+2021-03-21 17:45:50.791 root INFO: Generating the "instrument" attribute
+2021-03-21 17:45:50.794 root INFO: Generating the "status" attribute
+2021-03-21 17:45:50.797 root INFO: Generating the "px_init" attribute
+2021-03-21 17:45:50.803 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:45:50.810 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:45:50.815 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:45:50.823 root INFO: Generating the "note" attribute
+2021-03-21 17:45:50.828 root INFO: Generating the "tags" attribute
+2021-03-21 17:45:50.848 root INFO: Generating the "date" attribute
+2021-03-21 17:46:10.441 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:46:10.441 root INFO: Generating the "id" attribute
+2021-03-21 17:46:10.443 root INFO: Generating the "side" attribute
+2021-03-21 17:46:10.446 root INFO: Generating the "instrument" attribute
+2021-03-21 17:46:10.448 root INFO: Generating the "status" attribute
+2021-03-21 17:46:10.451 root INFO: Generating the "px_init" attribute
+2021-03-21 17:46:10.458 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:46:10.465 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:46:10.471 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:46:10.477 root INFO: Generating the "note" attribute
+2021-03-21 17:46:10.479 root INFO: Generating the "tags" attribute
+2021-03-21 17:46:10.493 root INFO: Generating the "date" attribute
+2021-03-21 17:46:59.133 root DEBUG: Config and logger setup was successful. Number of sections from config: 12
+2021-03-21 17:46:59.133 root INFO: Generating the "id" attribute
+2021-03-21 17:46:59.135 root INFO: Generating the "side" attribute
+2021-03-21 17:46:59.138 root INFO: Generating the "instrument" attribute
+2021-03-21 17:46:59.142 root INFO: Generating the "status" attribute
+2021-03-21 17:46:59.145 root INFO: Generating the "px_init" attribute
+2021-03-21 17:46:59.152 root INFO: Generating the "px_fill" attribute
+2021-03-21 17:46:59.160 root INFO: Generating the "volume_init" attribute
+2021-03-21 17:46:59.167 root INFO: Generating the "volume_fill" attribute
+2021-03-21 17:46:59.172 root INFO: Generating the "note" attribute
+2021-03-21 17:46:59.175 root INFO: Generating the "tags" attribute
+2021-03-21 17:46:59.188 root INFO: Generating the "date" attribute

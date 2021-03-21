@@ -173,7 +173,7 @@ class RecordFactory(RecordFactoryInterface):
 		self._builder.produce_volumefill()
 		self._builder.produce_notes()
 		self._builder.produce_tags()
-		# self._builder.produce_dates()
+		self._builder.produce_dates()
 		self._builder.collect_record()
 
 
@@ -369,8 +369,15 @@ class RecordBuilder(RecordBuilderInterface):
 			number_of_records, is_first_segment = self.define_number_of_records_for_order(order_number)
 			for record_number in range(number_of_records):
 				record_clear_items = {}
-				for key in record_items:
-					record_clear_items[key] = record_items[key]
+				for key in ORDER_ATTRIBUTES:
+					try:
+						if key == "DATE":
+							record_clear_items[key] = record_items[key][record_number]
+						else:
+							record_clear_items[key] = record_items[key]
+					except KeyError as ex:
+						record_clear_items[key] = "NULL"
+
 				try:
 					if is_first_segment:
 						if record_number == 1:
@@ -384,16 +391,14 @@ class RecordBuilder(RecordBuilderInterface):
 
 					if record_clear_items["STATUS"] == STATUSES[0] or record_clear_items["STATUS"] == STATUSES[1]:
 						record_clear_items["VOLUME_FILL"] = 0
-						record_clear_items["PRICE_FILL"] = 0
+						record_clear_items["PX_FILL"] = 0
 					else:
 						record_clear_items["VOLUME_FILL"] = record_items["VOLUME_FILL"]
-						record_clear_items["PRICE_FILL"] = record_items["PX_FILL"]
+						record_clear_items["PX_FILL"] = record_items["PX_FILL"]
 				except KeyError as ex:
 					pass
 
 				record = RecordDTO(*record_clear_items.values())
-				print(record)
-
 
 	def define_number_of_records_for_order(self, order_number):
 		if order_number < MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT:
@@ -430,6 +435,11 @@ class RecordDTO:
 	note: str = "NULL"
 	tags: str = "NULL"
 	date: date = "NULL"
+
+
+class RecordMapper:
+	def __init__(self, *args, **kwargs):
+		return 1
 
 
 if __name__ == "__main__":
