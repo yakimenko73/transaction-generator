@@ -162,20 +162,21 @@ class RecordFactory(RecordFactoryInterface):
 		self._builder.produce_id()
 		self._builder.produce_sides()
 		self._builder.produce_instruments()
-		self._builder.produce_statuses()
-		self._builder.produce_pxinit()
+		# self._builder.produce_statuses()
+		# self._builder.produce_pxinit()
 		self._builder.produce_pxfill()
 		self._builder.produce_volumeinit()
 		self._builder.produce_volumefill()
 		self._builder.produce_notes()
 		self._builder.produce_tags()
 		self._builder.produce_dates()
-		# self._builder.collect_record()
-		print(self._builder._record_attributes)
+		record = self._builder.collect_record()
 
+		# return record
 
 class RecordBuilder(RecordBuilderInterface):
 	def __init__(self):
+		self.record_model = RecordModel()
 		self.id_obj = IdGenerator(4294967296, 65539, 0, 1)
 		self.side_obj = SideGenerator(100, 1, 3)
 		self.instrument_obj = InstrumentGenerator(13, 1, 3)
@@ -257,41 +258,48 @@ class RecordBuilder(RecordBuilderInterface):
 		self._record_attributes["TAGS"] = tags
 
 	def collect_record(self):
-		for order_number in range(MAX_NUMBER_ORDERS):
-			record_items = self.define_order_items(order_number)
-			number_of_records, is_first_segment = self.define_number_of_records_for_order(order_number)
-			for record_number in range(number_of_records):
-				record_clear_items = {}
-				for key in ORDER_ATTRIBUTES:
-					try:
-						if key == "DATE":
-							record_clear_items[key] = record_items[key][record_number]
-						else:
-							record_clear_items[key] = record_items[key]
-					except KeyError as ex:
-						record_clear_items[key] = "NULL"
+		# for order_number in range(MAX_NUMBER_ORDERS):
+		# 	record_items = self.define_order_items(order_number)
+		# 	number_of_records, is_first_segment = self.define_number_of_records_for_order(order_number)
+		# 	for record_number in range(number_of_records):
+		# 		record_clear_items = {}
+		# 		for key in ORDER_ATTRIBUTES:
+		# 			try:
+		# 				if key == "DATE":
+		# 					record_clear_items[key] = record_items[key][record_number]
+		# 				else:
+		# 					record_clear_items[key] = record_items[key]
+		# 			except KeyError as ex:
+		# 				record_clear_items[key] = "NULL"
 
-				try:
-					if is_first_segment:
-						if record_number == 1:
-							record_clear_items["STATUS"] = record_items["STATUS"]
-						else:
-							record_clear_items["STATUS"] = STATUSES[record_number+1]
-					elif record_number == 2:
-						record_clear_items["STATUS"] = record_items["STATUS"]
-					else:
-						record_clear_items["STATUS"] = STATUSES[record_number]
+		# 		try:
+		# 			if is_first_segment:
+		# 				if record_number == 1:
+		# 					record_clear_items["STATUS"] = record_items["STATUS"]
+		# 				else:
+		# 					record_clear_items["STATUS"] = STATUSES[record_number+1]
+		# 			elif record_number == 2:
+		# 				record_clear_items["STATUS"] = record_items["STATUS"]
+		# 			else:
+		# 				record_clear_items["STATUS"] = STATUSES[record_number]
 
-					if record_clear_items["STATUS"] == STATUSES[0] or record_clear_items["STATUS"] == STATUSES[1]:
-						record_clear_items["VOLUME_FILL"] = 0
-						record_clear_items["PX_FILL"] = 0
-					else:
-						record_clear_items["VOLUME_FILL"] = record_items["VOLUME_FILL"]
-						record_clear_items["PX_FILL"] = record_items["PX_FILL"]
-				except KeyError as ex:
-					pass
+		# 			if record_clear_items["STATUS"] == STATUSES[0] or record_clear_items["STATUS"] == STATUSES[1]:
+		# 				record_clear_items["VOLUME_FILL"] = 0
+		# 				record_clear_items["PX_FILL"] = 0
+		# 			else:
+		# 				record_clear_items["VOLUME_FILL"] = record_items["VOLUME_FILL"]
+		# 				record_clear_items["PX_FILL"] = record_items["PX_FILL"]
+		# 		except KeyError as ex:
+		# 			pass
+		self.record_model.record = self._record_attributes
+		self.record_model.parameter_mapping()
+		record = self.record_model.convert_to_order_record()
+		print(record)
 
-				record = RecordDTO(*record_clear_items.values())
+		# record = RecordDTO(*self._record_attributes.values())
+		# print(record)
+
+		# return record
 
 	def define_number_of_records_for_order(self, order_number):
 		if order_number < MAX_LIMIT_ORDERS_FOR_FIRST_SEGMENT:
@@ -326,7 +334,34 @@ class RecordDTO:
 	volume_fill: int = "NULL"
 	note: str = "NULL"
 	tags: str = "NULL"
-	date: date = "NULL"
+	date: str = "NULL"
+
+
+class RecordModel:
+	def __init__(self):
+		self._total_record_counter = 0
+		self._record_counter_for_order = 0
+		self._last_record = {}
+
+	@property
+	def record(self):
+		return self._record
+
+	@record.setter
+	def record(self, record: dict):
+		self._record = record
+
+	def parameter_mapping(self):
+		mapped_record = {}
+		for key in ORDER_ATTRIBUTES:
+			try:
+				mapped_record[key] = hex(self._record[key]) if key == "ID" else self._record[key]
+			except KeyError as ex:
+				mapped_record[key] = "NULL"
+		self._record = mapped_record
+
+	def convert_to_order_record(self):
+		return self._record
 
 
 if __name__ == "__main__":
@@ -335,5 +370,5 @@ if __name__ == "__main__":
 		f"Number of sections from config: {len(parameters_set.keys())}")
 
 	factory = RecordFactory()
-	factory.create_history_record()
-	
+	for i in range(2000):
+		factory.create_history_record()

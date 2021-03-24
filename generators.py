@@ -227,7 +227,7 @@ class TagGenerator(GeneratorInterface):
 	def generate_value(self) -> str:
 		self.seed = (self.number_a * self.seed + self.number_c) % self.number_m
 
-		return self.seed, ', '.join([tag for tag in self.tags_kit[self.seed] if tag])
+		return ', '.join([tag for tag in self.tags_kit[self.seed] if tag])
 
 	def _generate_tags_matrix(self, seed):
 		matrix_tags = np.zeros((NUMBER_OF_DIFFERENT_TAGS_SETS, len(TAGS))).astype("str")
