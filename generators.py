@@ -1,5 +1,4 @@
 from __future__ import annotations
-from dataclasses import dataclass
 
 import math
 import datetime as dt
@@ -240,62 +239,3 @@ class TagGenerator(GeneratorInterface):
 				matrix_tags[row][column] = TAGS[column] if seed % 2 else ''
 
 		return matrix_tags
-
-
-@dataclass
-class RecordDTO:
-	id_: int  = "NULL"
-	side: str = "NULL"
-	instrument: str = "NULL"
-	status: str = "NULL"
-	px_init: float = "NULL"
-	px_fill: float = "NULL"
-	volume_init: int = "NULL"
-	volume_fill: int = "NULL"
-	note: str = "NULL"
-	tags: str = "NULL"
-	date: date = "NULL"
-
-
-if __name__ == "__main__":
-	id_obj = IdGenerator(4294967296, 65539, 0, 1)
-	side_obj = SideGenerator(100, 1, 3)
-	instrument_obj = InstrumentGenerator(13, 1, 3)
-	status_obj = StatusGenerator(300, 7, 4)
-	pxinit_obj = PXInitGenerator()
-	pxfill_obj = PXFillGenerator(0.00101, 0.0002, 0.00032)
-	volume_init_obj = VolumeInitGenerator(1000000, 1000, 4432423, 1)
-	volume_fill_obj = VolumeFillGenerator(1000, 4432423)
-	date_obj = DateGenerator(1000, 12, 7, 1, '01.02.2021  0:00:00')
-	note_obj = NoteGenerator(13, 1, 3)
-	tag_obj = TagGenerator(13, 1, 3, 423543, 1000, 43232, 1)
-	for i in range(2000):
-		id_ = id_obj.generate_value()
-		side = side_obj.generate_value()
-
-		instrument = instrument_obj.generate_value()
-
-		status_on_broker = status_obj.generate_value()
-		
-		pxinit = pxinit_obj.generate_value()
-		
-		pxfill = pxfill_obj.generate_value()
-		
-		volume_init = volume_init_obj.generate_value()
-		
-		volume_fill = volume_fill_obj.generate_value()
-	
-		date = date_obj.generate_value()
-
-		note = note_obj.generate_value()
-		
-		tags = tag_obj.generate_value()
-
-		record = RecordDTO(hex(id_), side, 
-			instrument, status_on_broker, 
-			pxinit, pxfill,
-			volume_init, volume_fill,
-			note, tags,
-			date,
-		)
-		print(record)
