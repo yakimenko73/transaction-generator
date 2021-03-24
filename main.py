@@ -1,5 +1,4 @@
 from __future__ import annotations
-from dataclasses import dataclass
 
 import os
 import re
@@ -9,6 +8,7 @@ import logging
 import configparser
 
 from abc import ABC, abstractmethod, abstractproperty
+from dataclasses import dataclass
 
 from constants import * 
 from generators import * 
@@ -97,10 +97,6 @@ class RecordFactoryInterface(ABC):
 
 
 class RecordBuilderInterface(ABC):
-	@abstractproperty
-	def record(self) -> None:
-		pass
-
 	@abstractmethod
 	def produce_id(self) -> list:
 		pass
@@ -180,11 +176,6 @@ class RecordFactory(RecordFactoryInterface):
 class RecordBuilder(RecordBuilderInterface):
 	def __init__(self):
 		self._record_attributes = {}
-
-	@property
-	def record(self) -> RecordDTO:
-		record = RecordDTO()
-		return record
 
 	def produce_id(self):
 		logging.info('Generating the "id" attribute')
@@ -413,7 +404,6 @@ class RecordBuilder(RecordBuilderInterface):
 
 		return number_of_records, is_first_segment
 
-
 	def define_order_items(self, order_number):
 		order_items = {}
 		for number_attribute, attribute_name in enumerate(self._record_attributes.keys()):
@@ -435,11 +425,6 @@ class RecordDTO:
 	note: str = "NULL"
 	tags: str = "NULL"
 	date: date = "NULL"
-
-
-class RecordMapper:
-	def __init__(self, *args, **kwargs):
-		return 1
 
 
 if __name__ == "__main__":
