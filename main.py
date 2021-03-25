@@ -106,8 +106,8 @@ class RecordFactory(RecordFactoryInterface):
 		self._builder.produce_id()
 		self._builder.produce_side()
 		self._builder.produce_instrument()
-		# self._builder.produce_status()
-		# self._builder.produce_pxinit()
+		self._builder.produce_status()
+		self._builder.produce_pxinit()
 		self._builder.produce_pxfill()
 		self._builder.produce_volumeinit()
 		self._builder.produce_volumefill()
@@ -121,10 +121,8 @@ class RecordFactory(RecordFactoryInterface):
 
 class RecordBuilder(RecordBuilderInterface):
 	def __init__(self):
-		self._total_record_counter = 0
-		self._record_number = 0
+		self._total_record_counter = 1
 		self._record_attributes = {}
-		self._last_record = 0
 
 		self.record_model = RecordModel()
 		self.id_obj = IdGenerator(4294967296, 65539, 0, 1)
@@ -140,72 +138,61 @@ class RecordBuilder(RecordBuilderInterface):
 		self.tag_obj = TagGenerator(13, 1, 3, 423543, 1000, 43232, 1)
 
 	def produce_id(self):
-		logging.info('Generating the "id" attribute')
-
-		id_ = self.id_obj.generate_value()
-		self._record_attributes["ID"] = id_
+		if self.is_a_new_order_record("ID"):
+			id_ = self.id_obj.generate_value()
+			self._record_attributes["ID"] = id_
 
 	def produce_side(self):
-		logging.info('Generating the "side" attribute')
-
-		side = self.side_obj.generate_value()
-		self._record_attributes["SIDE"] = side
+		if self.is_a_new_order_record("SIDE"):
+			side = self.side_obj.generate_value()
+			self._record_attributes["SIDE"] = side
 
 	def produce_instrument(self):
-		logging.info('Generating the "instrument" attribute')
-
-		instrument = self.instrument_obj.generate_value()
-		self._record_attributes["INSTRUMENT"] = instrument
+		if self.is_a_new_order_record("INSTRUMENT"):
+			instrument = self.instrument_obj.generate_value()
+			self._record_attributes["INSTRUMENT"] = instrument
 
 	def produce_status(self):
-		logging.info('Generating the "status" attribute')
-
-		status_on_broker = self.status_obj.generate_value()
-		self._record_attributes["STATUS"] = status_on_broker
+		if self.is_a_new_order_record("STATUS"):
+			status_on_broker = self.status_obj.generate_value()
+			self._record_attributes["STATUS"] = status_on_broker
 
 	def produce_pxinit(self):
-		logging.info('Generating the "px_init" attribute')
-
-		init_price = self.pxinit_obj.generate_value()
-		self._record_attributes["PX_INIT"] = init_price
+		if self.is_a_new_order_record("PX_INIT"):
+			init_price = self.pxinit_obj.generate_value()
+			self._record_attributes["PX_INIT"] = init_price
 
 	def produce_pxfill(self):
-		logging.info('Generating the "px_fill" attribute')
-
-		fill_price = self.pxfill_obj.generate_value()
-		self._record_attributes["PX_FILL"] = fill_price
+		if self.is_a_new_order_record("PX_FILL"):
+			fill_price = self.pxfill_obj.generate_value()
+			self._record_attributes["PX_FILL"] = fill_price
 
 	def produce_volumeinit(self):
-		logging.info('Generating the "volume_init" attribute')
-
-		init_volume = self.volume_init_obj.generate_value()
-		self._record_attributes["VOLUME_INIT"] = init_volume
+		if self.is_a_new_order_record("VOLUME_INIT"):
+			init_volume = self.volume_init_obj.generate_value()
+			self._record_attributes["VOLUME_INIT"] = init_volume
 
 	def produce_volumefill(self):
-		logging.info('Generating the "volume_fill" attribute')
-
-		fill_volume = self.volume_fill_obj.generate_value()
-		self._record_attributes["VOLUME_FILL"] = fill_volume
+		if self.is_a_new_order_record("VOLUME_FILL"):
+			fill_volume = self.volume_fill_obj.generate_value()
+			self._record_attributes["VOLUME_FILL"] = fill_volume
 
 	def produce_date(self):
-		logging.info('Generating the "date" attribute')
-
 		date = self.date_obj.generate_value()
 		self._record_attributes["DATE"] = date
 
 	def produce_note(self):
-		logging.info('Generating the "note" attribute')
-
-		note = self.note_obj.generate_value()
-		self._record_attributes["NOTE"] = note
+		if self.is_a_new_order_record("NOTE"):
+			note = self.note_obj.generate_value()
+			self._record_attributes["NOTE"] = note
 
 	def produce_tags(self):
-		logging.info('Generating the "tags" attribute')
-
-		tags = self.tag_obj.generate_value()
-		self._record_attributes["TAGS"] = tags
+		if self.is_a_new_order_record("TAGS"):
+			tags = self.tag_obj.generate_value()
+			self._record_attributes["TAGS"] = tags
 
 	def collect_record(self):
+		self._total_record_counter += 1
 		# 		try:
 		# 			if is_first_segment:
 		# 				if record_number == 1:
@@ -225,24 +212,27 @@ class RecordBuilder(RecordBuilderInterface):
 		# 				record_clear_items["PX_FILL"] = record_items["PX_FILL"]
 		# 		except KeyError as ex:
 		# 			pass
-		self._total_record_counter += 1
-		if self._record_number == 1:
-			record = self._record_attributes
-			self._last_record = record
-		elif self._record_number == number_of_records_for_order:
-			self._record_number = 0
-			record = self._last_record
-		else:
-			record = self._last_record
-		print(record)
+		self.record_model.record = self._record_attributes
+		self.record_model.parameter_mapping()
+		self.record_model.convert_to_order_record()
+		print(self.record_model.record)
 		# record = RecordDTO(*self._record_attributes.values())
 		# print(record)
 
 		# return record
 
-	def is_a_new_order_record(self):
-		self._record_number += 1
+	def is_a_new_order_record(self, attribute_name, record_counters={}):
+		try:
+			record_counters[attribute_name] += 1
+		except KeyError as ex:
+			record_counters[attribute_name] = 1
+
 		number_of_records_for_order = self.define_number_of_records_for_order()
+		if record_counters[attribute_name] == 1:
+			return True
+		elif record_counters[attribute_name] == number_of_records_for_order:
+			record_counters[attribute_name] = 0
+			return False
 
 	def define_number_of_records_for_order(self):
 		if self._total_record_counter <= MAX_LIMIT_RECORDS_FOR_FIRST_SEGMENT:
@@ -256,8 +246,6 @@ class RecordBuilder(RecordBuilderInterface):
 			is_first_segment = False
 
 		return number_of_records
-
-
 
 
 @dataclass
@@ -278,7 +266,7 @@ class RecordDTO:
 class RecordModel:
 	def __init__(self):
 		self._total_record_counter = 0
-		self._record_number = 0
+		self._record_number = -1
 		self._last_record = {}
 
 	@property
@@ -301,30 +289,39 @@ class RecordModel:
 	def convert_to_order_record(self):
 		self._total_record_counter += 1
 		self._record_number += 1
+		number_of_records_for_order, is_first_segment = self.define_number_of_records_for_order()
 		
-		if self._record_number == 1:
-			for i in range(number_of_records_for_order):
-				print(self._record)
-			# print(True)
-			# if is_first_segment:
-			# 	if self._record_number == 1:
-			# 		record_clear_items["STATUS"] = record_items["STATUS"]
-			# 	else:
-			# 		record_clear_items["STATUS"] = STATUSES[self._record_number+1]
-			# elif self._record_number == 2:
-			# 	record_clear_items["STATUS"] = record_items["STATUS"]
-			# else:
-			# 	record_clear_items["STATUS"] = STATUSES[self._record_number]
+		if is_first_segment:
+			if self._record_number == 1:
+				self._record["STATUS"] = self._record["STATUS"]
+			else:
+				self._record["STATUS"] = STATUSES[self._record_number+1]
+		elif self._record_number == 2:
+			self._record["STATUS"] = self._record["STATUS"]
+		else:
+			self._record["STATUS"] = STATUSES[self._record_number]
 
-			# if record_clear_items["STATUS"] == STATUSES[0] or record_clear_items["STATUS"] == STATUSES[1]:
-			# 	record_clear_items["VOLUME_FILL"] = 0
-			# 	record_clear_items["PX_FILL"] = 0
-			# else:
-			# 	record_clear_items["VOLUME_FILL"] = record_items["VOLUME_FILL"]
-			# 	record_clear_items["PX_FILL"] = record_items["PX_FILL"]
-		# else:
-		# 	self._last_record = {}
-		# 	self._record_number = 0
+		if self._record["STATUS"] == STATUSES[0] or self._record["STATUS"] == STATUSES[1]:
+			self._record["VOLUME_FILL"] = 0
+			self._record["PX_FILL"] = 0
+		else:
+			self._record["VOLUME_FILL"] = self._record["VOLUME_FILL"]
+			self._record["PX_FILL"] = self._record["VOLUME_FILL"]
+		if self._record_number == number_of_records_for_order-1:
+			self._record_number = -1
+
+	def define_number_of_records_for_order(self):
+		if self._total_record_counter <= MAX_LIMIT_RECORDS_FOR_FIRST_SEGMENT:
+			number_of_records = NUMBER_OF_RECORDS_FOR_FIRST_SEGMENT
+			is_first_segment = True
+		elif self._total_record_counter <= MAX_LIMIT_RECORDS_FOR_SECOND_SEGMENT:
+			number_of_records = NUMBER_OF_RECORDS_FOR_SECOND_SEGMENT
+			is_first_segment = False
+		else:
+			number_of_records = NUMBER_OF_RECORDS_FOR_THIRD_SEGMENT
+			is_first_segment = False
+
+		return number_of_records, is_first_segment
 
 
 if __name__ == "__main__":
@@ -333,5 +330,5 @@ if __name__ == "__main__":
 		f"Number of sections from config: {len(parameters_set.keys())}")
 
 	factory = RecordFactory()
-	for i in range(4):
+	for i in range(7200):
 		factory.create_history_record()
