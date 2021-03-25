@@ -116,7 +116,7 @@ class RecordFactory(RecordFactoryInterface):
 		self._builder.produce_date()
 		record = self._builder.collect_record()
 
-		# return record
+		return record
 
 
 class RecordBuilder(RecordBuilderInterface):
@@ -193,33 +193,14 @@ class RecordBuilder(RecordBuilderInterface):
 
 	def collect_record(self):
 		self._total_record_counter += 1
-		# 		try:
-		# 			if is_first_segment:
-		# 				if record_number == 1:
-		# 					record_clear_items["STATUS"] = record_items["STATUS"]
-		# 				else:
-		# 					record_clear_items["STATUS"] = STATUSES[record_number+1]
-		# 			elif record_number == 2:
-		# 				record_clear_items["STATUS"] = record_items["STATUS"]
-		# 			else:
-		# 				record_clear_items["STATUS"] = STATUSES[record_number]
 
-		# 			if record_clear_items["STATUS"] == STATUSES[0] or record_clear_items["STATUS"] == STATUSES[1]:
-		# 				record_clear_items["VOLUME_FILL"] = 0
-		# 				record_clear_items["PX_FILL"] = 0
-		# 			else:
-		# 				record_clear_items["VOLUME_FILL"] = record_items["VOLUME_FILL"]
-		# 				record_clear_items["PX_FILL"] = record_items["PX_FILL"]
-		# 		except KeyError as ex:
-		# 			pass
 		self.record_model.record = self._record_attributes
 		self.record_model.parameter_mapping()
-		self.record_model.convert_to_order_record()
-		print(self.record_model.record)
-		# record = RecordDTO(*self._record_attributes.values())
-		# print(record)
+		self.record_model.convert_history_record_to_order_record()
 
-		# return record
+		record = RecordDTO(*self.record_model.record.values())
+
+		return record
 
 	def is_a_new_order_record(self, attribute_name, record_counters={}):
 		try:
@@ -267,7 +248,6 @@ class RecordModel:
 	def __init__(self):
 		self._total_record_counter = 0
 		self._record_number = -1
-		self._last_record = {}
 
 	@property
 	def record(self):
@@ -286,27 +266,19 @@ class RecordModel:
 				mapped_record[key] = "NULL"
 		self._record = mapped_record
 
-	def convert_to_order_record(self):
+	def convert_history_record_to_order_record(self):
 		self._total_record_counter += 1
 		self._record_number += 1
 		number_of_records_for_order, is_first_segment = self.define_number_of_records_for_order()
 		
 		if is_first_segment:
-			if self._record_number == 1:
-				self._record["STATUS"] = self._record["STATUS"]
-			else:
-				self._record["STATUS"] = STATUSES[self._record_number+1]
-		elif self._record_number == 2:
-			self._record["STATUS"] = self._record["STATUS"]
+			self._record["STATUS"] = self._record["STATUS"] if self._record_number == 1 else STATUSES[self._record_number+1]
 		else:
-			self._record["STATUS"] = STATUSES[self._record_number]
+			self._record["STATUS"] = self._record["STATUS"] if self._record_number == 2 else STATUSES[self._record_number]
 
-		if self._record["STATUS"] == STATUSES[0] or self._record["STATUS"] == STATUSES[1]:
-			self._record["VOLUME_FILL"] = 0
-			self._record["PX_FILL"] = 0
-		else:
-			self._record["VOLUME_FILL"] = self._record["VOLUME_FILL"]
-			self._record["PX_FILL"] = self._record["VOLUME_FILL"]
+		self._record["VOLUME_FILL"] = 0 if self._record["STATUS"] in STATUSES[:2] else self._record["VOLUME_FILL"]
+		self._record["PX_FILL"] = 0 if self._record["STATUS"] in STATUSES[:2] else self._record["PX_FILL"]
+
 		if self._record_number == number_of_records_for_order-1:
 			self._record_number = -1
 
@@ -331,4 +303,4 @@ if __name__ == "__main__":
 
 	factory = RecordFactory()
 	for i in range(7200):
-		factory.create_history_record()
+		print(factory.create_history_record())
