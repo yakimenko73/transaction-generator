@@ -7,12 +7,11 @@ import numpy as np
 from abc import ABC, abstractmethod, abstractproperty
 
 from constants import *
+from interfaces import GeneratorInterface
+from main import Config
 
 
-class GeneratorInterface(ABC):
-	@abstractmethod
-	def generate_value(self):
-		pass
+CONFIG = Config().setup()
 
 
 class IdGenerator(GeneratorInterface):
@@ -30,7 +29,7 @@ class IdGenerator(GeneratorInterface):
 
 class SideGenerator(GeneratorInterface):
 	def __init__(self, m: int, a: int, c: int) -> None:
-		self._id_generator = IdGenerator(4294967296, 65539, 0, 1)
+		self._id_generator = IdGenerator(*CONFIG["IDSettings"].values())
 
 		self.modulus = m
 		self.multiplier = a
@@ -46,7 +45,7 @@ class SideGenerator(GeneratorInterface):
 
 class InstrumentGenerator(GeneratorInterface):
 	def __init__(self, m: int, a: int, c: int) -> None:
-		self._id_generator = IdGenerator(4294967296, 65539, 0, 1)
+		self._id_generator = IdGenerator(*CONFIG["IDSettings"].values())
 
 		self.modulus = m
 		self.multiplier = a
@@ -66,7 +65,7 @@ class InstrumentGenerator(GeneratorInterface):
 
 class StatusGenerator(GeneratorInterface):
 	def __init__(self, m: int, a: int, c: int) -> None:
-		self._id_generator = IdGenerator(4294967296, 65539, 0, 1)
+		self._id_generator = IdGenerator(*CONFIG["IDSettings"].values())
 
 		self.modulus = m
 		self.multiplier = a
@@ -88,8 +87,8 @@ class StatusGenerator(GeneratorInterface):
 
 class PXInitGenerator(GeneratorInterface):
 	def __init__(self) -> None:
-		self._side_generator = SideGenerator(100, 1, 3)
-		self._instrument_generator = InstrumentGenerator(13, 1, 3)
+		self._side_generator = SideGenerator(*CONFIG["SideSettings"].values())
+		self._instrument_generator = InstrumentGenerator(*CONFIG["InstrumentSettings"].values())
 
 		self._side_sell = SIDES[0]
 		self._side_buy = SIDES[1]
@@ -107,9 +106,9 @@ class PXInitGenerator(GeneratorInterface):
 
 class PXFillGenerator(GeneratorInterface):
 	def __init__(self, m: float, a: float, c: float) -> None:
-		self._id_generator = IdGenerator(4294967296, 65539, 0, 1)
+		self._id_generator = IdGenerator(*CONFIG["IDSettings"].values())
 		self._price_generator = PXInitGenerator()
-		self._status_generator = StatusGenerator(300, 7, 4)
+		self._status_generator = StatusGenerator(*CONFIG["StatusSettings"].values())
 
 		self._status_cancel = STATUSES[2][2]
 		self.modulus = m
@@ -146,9 +145,9 @@ class VolumeInitGenerator(GeneratorInterface):
 
 class VolumeFillGenerator(GeneratorInterface):
 	def __init__(self, a: int, c: int) -> None:
-		self._id_generator = IdGenerator(4294967296, 65539, 0, 1)
-		self._status_generator = StatusGenerator(300, 7, 4)
-		self._volume_generator = VolumeInitGenerator(1000000, 1000, 4432423, 1)
+		self._id_generator = IdGenerator(*CONFIG["IDSettings"].values())
+		self._status_generator = StatusGenerator(*CONFIG["StatusSettings"].values())
+		self._volume_generator = VolumeInitGenerator(*CONFIG["VolumeInitSettings"].values())
 
 		self._status_partialfill = STATUSES[2][1]
 		self._status_cancel = STATUSES[2][2]
@@ -195,7 +194,7 @@ class DateGenerator(GeneratorInterface):
 
 class NoteGenerator(GeneratorInterface):
 	def __init__(self, m: int, a: int, c: int) -> None:
-		self._id_generator = IdGenerator(4294967296, 65539, 0, 1)
+		self._id_generator = IdGenerator(*CONFIG["IDSettings"].values())
 
 		self.modulus = m
 		self.multiplier = a

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod, abstractproperty
 
+
 class RecordFactoryInterface(ABC):
 	@abstractmethod
 	def create_history_record(self) -> list:
@@ -58,15 +59,21 @@ class RecordBuilderInterface(ABC):
 		pass
 
 
+class GeneratorInterface(ABC):
+	@abstractmethod
+	def generate_value(self):
+		pass
+
+
 class StorageInterface(ABC):
 	@abstractmethod
 	def find_all(self) -> list:
 		pass
 
 	@abstractmethod
-	def create(self) -> dict:
+	def find_by_id(self) -> dict:
 		pass
 
 	@abstractmethod
-	def find_by_id(self) -> dict:
+	def create(self) -> dict:
 		pass

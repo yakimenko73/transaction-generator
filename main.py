@@ -14,46 +14,6 @@ from utils import Singleton, create_file_path
 from storage import RecordRepository, ArrayStorage, MySQLStorage
 
 
-def setup():
-	config = Config()
-	parameters_set = config.setup()
-	logging_setup(
-		parameters_set["Path"]["path_to_log"], 
-		*parameters_set["LoggingSettings"].values(),
-	)
-
-	return parameters_set
-
-
-def logging_setup(path_to_log, log_level, log_filemode):
-	if not log_level in TRUE_LOG_LEVELS:
-		log_level = 'DEBUG'
-
-	if not log_filemode in TRUE_FILE_MODES:
-		log_filemode = 'a'
-
-	path = create_file_path(path_to_log)
-
-	logging.basicConfig(filename=path, 
-		level=log_level,
-		filemode=log_filemode, 
-		format=MESSAGE_FORMAT_FOR_LOGGER,
-		datefmt=DATE_FORMAT_FOR_LOGGER)
-
-
-def workflow(parameters_set):
-	factory = RecordFactory(parameters_set)
-	storage = ArrayStorage()
-	repo = RecordRepository(storage)
-	for i in range(7200):
-		record = factory.create_history_record()
-		repo.create(record)
-	print(*repo.find_by_id(0).values())
-	print(*repo.find_by_id(1).values())
-	print(*repo.find_by_id(2).values())
-	print(*repo.find_by_id(3).values())
-
-
 class RecordFactory(RecordFactoryInterface):
 	def __init__(self, config: dict) -> None:
 		self._builder = RecordBuilder(config)
@@ -299,6 +259,43 @@ class Config(metaclass=Singleton):
 			os._exit(0)
 
 		return self.parameters_set
+
+
+def setup():
+	config = Config()
+	parameters_set = config.setup()
+	logging_setup(
+		parameters_set["Path"]["path_to_log"], 
+		*parameters_set["LoggingSettings"].values(),
+	)
+
+	return parameters_set
+
+
+def logging_setup(path_to_log, log_level, log_filemode):
+	if not log_level in TRUE_LOG_LEVELS:
+		log_level = 'DEBUG'
+
+	if not log_filemode in TRUE_FILE_MODES:
+		log_filemode = 'a'
+
+	path = create_file_path(path_to_log)
+
+	logging.basicConfig(filename=path, 
+		level=log_level,
+		filemode=log_filemode, 
+		format=MESSAGE_FORMAT_FOR_LOGGER,
+		datefmt=DATE_FORMAT_FOR_LOGGER)
+
+
+def workflow(parameters_set):
+	factory = RecordFactory(parameters_set)
+	storage = ArrayStorage(parameters_set)
+	repo = RecordRepository(storage)
+	for i in range(7200):
+		record = factory.create_history_record()
+		repo.create(record)
+	print(*repo.show_all())
 
 
 if __name__ == "__main__":

@@ -24,7 +24,7 @@ class RecordRepository:
 
 
 class ArrayStorage(StorageInterface):
-	def __init__(self):
+	def __init__(self, config: dict=None):
 		self.__array = []
 
 	def find_all(self):
@@ -45,27 +45,28 @@ class ArrayStorage(StorageInterface):
 
 class MySQLStorage(StorageInterface):
 	def __init__(self, config: dict):
-		self.__connection = MySQLConnector()
-		self.__config = config
+		self._config = config
+		self.__connection = MySQLConnector(self._config)
 		self._create_database()
 		self._use_database()
 		self._create_table()
 
 	def find_all(self):
-		query = f"SELECT * FROM {TABLE_NAME}"
+		query = f"SELECT * FROM {self._config['MySQLSettings']['table_name']}"
 		cursor = self._execute_query(query)
 		response = self._mapping_response(cursor)
 		return response
 
 	def find_by_id(self, id):
-		query = f"SELECT * FROM {TABLE_NAME} WHERE ID = '{id}'"
+		query = f"SELECT * FROM {self._config['MySQLSettings']['table_name']} WHERE ID = '{id}'"
 		cursor = self._execute_query()
 		response = self._mapping_response(cursor)
 		return response[0]
 
 	def create(self, data):
 		record = data.__dict__
-		query = "INSERT INTO {} VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(TABLE_NAME, *record.values())
+		query = "INSERT INTO {} VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')"\
+			.format(self._config['MySQLSettings']['table_name'], *record.values())
 		self._execute_query(query)
 
 		return record
@@ -78,31 +79,32 @@ class MySQLStorage(StorageInterface):
 
 	def _create_database(self):
 		query = f""" 
-			CREATE DATABASE IF NOT EXISTS {DATABASE_NAME}
+			CREATE DATABASE IF NOT EXISTS {self._config['MySQLSettings']['database_name']}
 		"""
 		
 		self._execute_query(query)
 
 	def _use_database(self):
-		query = f"USE {DATABASE_NAME}"
+		query = f"USE {self._config['MySQLSettings']['database_name']}"
 
 		self._execute_query(query)
 
 	def _create_table(self):
+		attr = ORDER_ATTRIBUTES
 		query = f"""
-		CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
+		CREATE TABLE IF NOT EXISTS {self._config['MySQLSettings']['table_name']} (
 			INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT, 
-			ID VARCHAR(10),
-			SIDE ENUM({', '.join(SIDES)}),
-			INSTRUMENT ENUM({', '.join(map(lambda instrument: instrument[0], INSTRUMENTS))}),
-			STATUS ENUM({', '.join(map(lambda status: ' '.join(status) if type(status) == list else status, STATUSES))}),
-			PX_INIT INT(4),
-			PX_FILL INT(4),
-			VOLUME_INIT FLOAT(4),
-			VOLUME_FILL FLOAT(4),
-			NOTE VARCHAR(255),
-			TAGS VARCHAR(100))
-			DATE DATETIME(3),
+			{attr[0]} VARCHAR(10),
+			{attr[1]} ENUM({', '.join(SIDES)}),
+			{attr[2]} ENUM({', '.join(map(lambda instrument: instrument[0], INSTRUMENTS))}),
+			{attr[3]} ENUM({', '.join(map(lambda status: ' '.join(status) if type(status) == list else status, STATUSES))}),
+			{attr[4]} INT(4),
+			{attr[5]} INT(4),
+			{attr[6]} FLOAT(4),
+			{attr[7]} FLOAT(4),
+			{attr[8]} VARCHAR(255),
+			{attr[9]} VARCHAR(100))
+			{attr[10]} DATETIME(3),
 		"""
 		self._execute_query(query)
 
@@ -117,10 +119,10 @@ class MySQLStorage(StorageInterface):
 
 
 class MySQLConnector(metaclass=Singleton):
-	def __init__(self, user="root", password="root", host="127.0.0.1"):
-		self._user = user
-		self._password = password
-		self._host = host
+	def __init__(self, config):
+		self._user = config['MySQLSettings']["user"]
+		self._password = config['MySQLSettings']["password"]
+		self._host = config['MySQLSettings']["host"]
 
 		self.connect = mysql.connector.connect(
 			user=self._user, 
