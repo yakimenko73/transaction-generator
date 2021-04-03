@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from constants import * 
 from generators import * 
 from interfaces import *
-from storage import RecordRepository, ArrayStorage
+from storage import RecordRepository, ArrayStorage, MySQLStorage
 
 
 def setup():
@@ -232,7 +232,7 @@ class RecordBuilder(RecordBuilderInterface):
 
 @dataclass
 class RecordDTO:
-	id_: int  = 0
+	id_: hex  = 0
 	side: str = "NULL"
 	instrument: str = "NULL"
 	status: str = "NULL"
@@ -308,4 +308,4 @@ if __name__ == "__main__":
 	for i in range(7200):
 		record = factory.create_history_record()
 		repo.create(record)
-	print(repo.show_all())
+	print(*repo.show_all())
