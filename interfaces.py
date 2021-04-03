@@ -56,3 +56,17 @@ class RecordBuilderInterface(ABC):
 	@abstractmethod
 	def collect_record(self) -> list:
 		pass
+
+
+class StorageInterface(ABC):
+	@abstractmethod
+	def find_all(self) -> list:
+		pass
+
+	@abstractmethod
+	def create(self) -> dict:
+		pass
+
+	@abstractmethod
+	def find_by_id(self) -> dict:
+		pass

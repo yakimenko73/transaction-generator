@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from constants import * 
 from generators import * 
 from interfaces import *
+from storage import RecordRepository, ArrayStorage
 
 
 def setup():
@@ -123,8 +124,8 @@ class RecordBuilder(RecordBuilderInterface):
 	def __init__(self):
 		self._total_record_counter = 1
 		self._record_attributes = {}
-
 		self.record_model = RecordModel()
+
 		self.id_obj = IdGenerator(4294967296, 65539, 0, 1)
 		self.side_obj = SideGenerator(100, 1, 3)
 		self.instrument_obj = InstrumentGenerator(13, 1, 3)
@@ -231,14 +232,14 @@ class RecordBuilder(RecordBuilderInterface):
 
 @dataclass
 class RecordDTO:
-	id_: int  = "NULL"
+	id_: int  = 0
 	side: str = "NULL"
 	instrument: str = "NULL"
 	status: str = "NULL"
-	px_init: float = "NULL"
-	px_fill: float = "NULL"
-	volume_init: int = "NULL"
-	volume_fill: int = "NULL"
+	px_init: float = 0.0
+	px_fill: float = 0.0
+	volume_init: int = 0
+	volume_fill: int = 0
 	note: str = "NULL"
 	tags: str = "NULL"
 	date: str = "NULL"
@@ -302,5 +303,9 @@ if __name__ == "__main__":
 		f"Number of sections from config: {len(parameters_set.keys())}")
 
 	factory = RecordFactory()
+	storage = ArrayStorage()
+	repo = RecordRepository(storage)
 	for i in range(7200):
-		print(factory.create_history_record())
+		record = factory.create_history_record()
+		repo.create(record)
+	print(repo.show_all())
