@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import sys
+import os
 # import mysql.connector
 # from mysql.connector import errorcode
 
@@ -52,7 +52,7 @@ class MySQLStorage(StorageInterface):
 		self._create_table()
 
 	def find_all(self):
-		query = f"SELECT * FROM {self._config['MySQLSettings']['table_name']}"
+		query = TEMPLATE_SQL_SELECT.format(self._config['MySQLSettings']['table_name'])
 		cursor = self._execute_query(query)
 		response = self._mapping_response(cursor)
 		return response
@@ -73,8 +73,13 @@ class MySQLStorage(StorageInterface):
 
 	def _execute_query(self, query):
 		cursor = self.__connection.cursor()
-		cursor.execute(query)
-		self.__connection.commit()
+		try:
+			cursor.execute(query)
+			self.__connection.commit()
+		except Exception as ex:
+			logging.error(f"Failed to execute query. Query: {query}. Ex: {ex}")
+			cursor = None
+
 		return cursor
 
 	def _create_database(self):
@@ -110,25 +115,41 @@ class MySQLStorage(StorageInterface):
 
 	def _mapping_response(self, cursor):
 		response = []
-		for item in cursor:
-			record = {}
-			for index, attribute in enumerate(ORDER_ATTRIBUTES):
-				record[attribute] = item[index+1]
-			response.append(record)
+		if cursor:
+			for item in cursor:
+				record = {}
+				for index, attribute in enumerate(ORDER_ATTRIBUTES):
+					record[attribute] = item[index+1]
+				response.append(record)
+		else:
+			response.append(None)
+			
 		return response
 
 
 class MySQLConnector(metaclass=Singleton):
 	def __init__(self, config):
-		self._user = config['MySQLSettings']["user"]
-		self._password = config['MySQLSettings']["password"]
-		self._host = config['MySQLSettings']["host"]
+		try:
+			self._user = config['MySQLSettings']["user"]
+			self._password = config['MySQLSettings']["password"]
+			self._host = config['MySQLSettings']["host"]
 
-		self.connect = mysql.connector.connect(
-			user=self._user, 
-			password=self._password,
-			host=self._host
-		)
+			self.connect = mysql.connector.connect(
+				user=self._user, 
+				password=self._password,
+				host=self._host
+			)
+
+		except KeyError as ex:
+			logging.error("Incorrect parameters in the config file for connecting to MySQL.")
+			os._exit(0)
+
+		except Exception as ex:
+			logging.error(f"Unable to connect to MySQL. Ex: {ex}")
+			os._exit(0)
 
 	def __exit__(self, exc_type, exc_val, exc_tb):
-		self.connect.close()
+		try:
+			self.connect.close()
+		except Exception as ex:
+			logging.error(f"Unable to close MySQL connection. Ex: {ex}")
