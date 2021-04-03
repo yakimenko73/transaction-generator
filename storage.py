@@ -44,26 +44,24 @@ class ArrayStorage(StorageInterface):
 
 
 class MySQLStorage(StorageInterface):
-	def __init__(self):
+	def __init__(self, config: dict):
 		self.__connection = MySQLConnector()
-		self.__config = Config()
+		self.__config = config
 		self._create_database()
 		self._use_database()
 		self._create_table()
 
 	def find_all(self):
-		response = []
 		query = f"SELECT * FROM {TABLE_NAME}"
 		cursor = self._execute_query(query)
-		for item in cursor:
-			record = {}
-			for index, attribute in enumerate(ORDER_ATTRIBUTES):
-				record[attribute] = item[index+1]
-			response.append(record)
+		response = self._mapping_response(cursor)
 		return response
 
 	def find_by_id(self, id):
-		return "find by id"
+		query = f"SELECT * FROM {TABLE_NAME} WHERE ID = '{id}'"
+		cursor = self._execute_query()
+		response = self._mapping_response(cursor)
+		return response[0]
 
 	def create(self, data):
 		record = data.__dict__
@@ -95,9 +93,9 @@ class MySQLStorage(StorageInterface):
 		CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
 			INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT, 
 			ID VARCHAR(10),
-			SIDE ENUM({str(*SIDES)}),
-			INSTRUMENT ENUM({str(*map(lambda instrument: instrument[0], INSTRUMENTS))}),
-			STATUS ENUM({str(*map(lambda status: ' '.join(status) if type(status) == list else status , STATUSES))}),
+			SIDE ENUM({', '.join(SIDES)}),
+			INSTRUMENT ENUM({', '.join(map(lambda instrument: instrument[0], INSTRUMENTS))}),
+			STATUS ENUM({', '.join(map(lambda status: ' '.join(status) if type(status) == list else status, STATUSES))}),
 			PX_INIT INT(4),
 			PX_FILL INT(4),
 			VOLUME_INIT FLOAT(4),
@@ -108,20 +106,26 @@ class MySQLStorage(StorageInterface):
 		"""
 		self._execute_query(query)
 
+	def _mapping_response(self, cursor):
+		response = []
+		for item in cursor:
+			record = {}
+			for index, attribute in enumerate(ORDER_ATTRIBUTES):
+				record[attribute] = item[index+1]
+			response.append(record)
+		return response
+
 
 class MySQLConnector(metaclass=Singleton):
-	def __init__(self, user="root", password="root", host="127.0.0.1", database="generator"):
-		self.user = user
+	def __init__(self, user="root", password="root", host="127.0.0.1"):
 		self._user = user
 		self._password = password
 		self._host = host
-		self._database = database
 
 		self.connect = mysql.connector.connect(
 			user=self._user, 
 			password=self._password,
-			host=self._host,
-			database=self._database
+			host=self._host
 		)
 
 	def __exit__(self, exc_type, exc_val, exc_tb):

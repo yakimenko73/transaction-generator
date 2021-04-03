@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import os
-import re
-import csv
 import datetime as dt
+import csv
 import logging
 import configparser
 
@@ -12,52 +10,17 @@ from dataclasses import dataclass
 from constants import * 
 from generators import * 
 from interfaces import *
+from utils import Singleton, create_file_path
 from storage import RecordRepository, ArrayStorage, MySQLStorage
 
 
 def setup():
-	parameters_set = config_setup()
+	config = Config()
+	parameters_set = config.setup()
 	logging_setup(
 		parameters_set["Path"]["path_to_log"], 
 		*parameters_set["LoggingSettings"].values(),
 	)
-
-	return parameters_set
-
-
-def config_setup():
-	path_to_config = 'settings/config.ini'
-	config = configparser.ConfigParser()
-	config.read(path_to_config)
-
-	parameters_set = {}
-
-	try:
-		for section in config:
-			if section != "DEFAULT":
-				parameters_set[section] = {}
-			for field in config[section]:
-				if section == "LoggingSettings":
-					parameters_set[section][field] = config[section][field].lower()
-
-				elif section == "DateSettings" or section == "PXFillSettings":
-					if field == "start_date":
-						dt.datetime.strptime(config[section][field], DATE_FORMAT_FOR_DATE_ATTRIBUTE)
-						parameters_set[section][field] = config[section][field]
-					else:
-						parameters_set[section][field] = float(config[section][field])
-
-				elif section == "Path":
-					parameters_set[section][field] = config[section][field]
-				else:
-					parameters_set[section][field] = int(config[section][field])
-		if not parameters_set:
-			raise FileNotFoundError("Config file not found")
-	except (ValueError, FileNotFoundError, ) as ex:
-		print("Incorrect parameters in the config file or the file is missing at all. " +
-			f"Path: {path_to_config}. Ex: {ex}")
-
-		os._exit(0)
 
 	return parameters_set
 
@@ -78,22 +41,22 @@ def logging_setup(path_to_log, log_level, log_filemode):
 		datefmt=DATE_FORMAT_FOR_LOGGER)
 
 
-def create_file_path(path):
-	pathdir = ''.join(re.findall(r"\w+/", path))
-	if pathdir:
-		if not os.path.exists(pathdir):
-			try:
-				os.makedirs(pathdir)
-			except OSError as ex:
-				logging.warning("Failed to create file in the selected path. " +
-					f"Created a file in the executing directory. Path: {path}. Ex: {ex}")
-				path = os.path.basename(path)
-	return path
+def workflow(parameters_set):
+	factory = RecordFactory(parameters_set)
+	storage = ArrayStorage()
+	repo = RecordRepository(storage)
+	for i in range(7200):
+		record = factory.create_history_record()
+		repo.create(record)
+	print(*repo.find_by_id(0).values())
+	print(*repo.find_by_id(1).values())
+	print(*repo.find_by_id(2).values())
+	print(*repo.find_by_id(3).values())
 
 
 class RecordFactory(RecordFactoryInterface):
-	def __init__(self) -> None:
-		self._builder = RecordBuilder()
+	def __init__(self, config: dict) -> None:
+		self._builder = RecordBuilder(config)
 
 	@property
 	def builder(self) -> RecordBuilder:
@@ -115,28 +78,29 @@ class RecordFactory(RecordFactoryInterface):
 		self._builder.produce_note()
 		self._builder.produce_tags()
 		self._builder.produce_date()
+
 		record = self._builder.collect_record()
 
 		return record
 
 
 class RecordBuilder(RecordBuilderInterface):
-	def __init__(self):
+	def __init__(self, config):
 		self._total_record_counter = 1
 		self._record_attributes = {}
 		self.record_model = RecordModel()
 
-		self.id_obj = IdGenerator(4294967296, 65539, 0, 1)
-		self.side_obj = SideGenerator(100, 1, 3)
-		self.instrument_obj = InstrumentGenerator(13, 1, 3)
-		self.status_obj = StatusGenerator(300, 7, 4)
+		self.id_obj = IdGenerator(*config["IDSettings"].values())
+		self.side_obj = SideGenerator(*config["SideSettings"].values())
+		self.instrument_obj = InstrumentGenerator(*config["InstrumentSettings"].values())
+		self.status_obj = StatusGenerator(*config["StatusSettings"].values())
 		self.pxinit_obj = PXInitGenerator()
-		self.pxfill_obj = PXFillGenerator(0.00101, 0.0002, 0.00032)
-		self.volume_init_obj = VolumeInitGenerator(1000000, 1000, 4432423, 1)
+		self.pxfill_obj = PXFillGenerator(*config["PXFillSettings"].values())
+		self.volume_init_obj = VolumeInitGenerator(*config["VolumeInitSettings"].values())
 		self.volume_fill_obj = VolumeFillGenerator(1000, 4432423)
-		self.date_obj = DateGenerator(1000, 12, 7, 1, '01.02.2021  0:00:00')
-		self.note_obj = NoteGenerator(13, 1, 3)
-		self.tag_obj = TagGenerator(13, 1, 3, 423543, 1000, 43232, 1)
+		self.date_obj = DateGenerator(*config["DateSettings"].values())
+		self.note_obj = NoteGenerator(*config["NoteSettings"].values())
+		self.tag_obj = TagGenerator(*config["TagSettings"].values())
 
 	def produce_id(self):
 		if self.is_a_new_order_record("ID"):
@@ -297,15 +261,50 @@ class RecordModel:
 		return number_of_records, is_first_segment
 
 
+class Config(metaclass=Singleton):
+	def __init__(self):
+		self._path_to_config = 'settings/config.ini'
+		self.parameters_set = {}
+
+	def setup(self):
+		config = configparser.ConfigParser()
+		config.read(self._path_to_config)
+		self.parameters_set = {}
+
+		try:
+			for section in config:
+				if section != "DEFAULT":
+					self.parameters_set[section] = {}
+				for field in config[section]:
+					if section == "LoggingSettings":
+						self.parameters_set[section][field] = config[section][field].lower()
+
+					elif section in ("DateSettings", "PXFillSettings", ):
+						if field == "start_date":
+							dt.datetime.strptime(config[section][field], DATE_FORMAT_FOR_DATE_ATTRIBUTE)
+							self.parameters_set[section][field] = config[section][field]
+						else:
+							self.parameters_set[section][field] = float(config[section][field])
+
+					elif section in ("Path", "MySQLSettings", ):
+						self.parameters_set[section][field] = config[section][field]
+					else:
+						self.parameters_set[section][field] = int(config[section][field])
+			if not self.parameters_set:
+				raise FileNotFoundError("Config file not found")
+		except (ValueError, FileNotFoundError, ) as ex:
+			print("Incorrect parameters in the config file or the file is missing at all. " +
+				f"Path: {path_to_config}. Ex: {ex}")
+
+			os._exit(0)
+
+		return self.parameters_set
+
+
 if __name__ == "__main__":
 	parameters_set = setup()
 	logging.debug("Config and logger setup was successful. " + 
 		f"Number of sections from config: {len(parameters_set.keys())}")
 
-	factory = RecordFactory()
-	storage = ArrayStorage()
-	repo = RecordRepository(storage)
-	for i in range(7200):
-		record = factory.create_history_record()
-		repo.create(record)
-	print(*repo.show_all())
+	workflow(parameters_set)
+	
