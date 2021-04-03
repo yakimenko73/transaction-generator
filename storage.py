@@ -58,15 +58,15 @@ class MySQLStorage(StorageInterface):
 		return response
 
 	def find_by_id(self, id):
-		query = f"SELECT * FROM {self._config['MySQLSettings']['table_name']} WHERE ID = '{id}'"
+		query = TEMPLATE_SQL_SELECT.format(self._config['MySQLSettings']['table_name']) + \
+			f" WHERE ID = '{id}'"
 		cursor = self._execute_query()
 		response = self._mapping_response(cursor)
 		return response[0]
 
 	def create(self, data):
 		record = data.__dict__
-		query = "INSERT INTO {} VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')"\
-			.format(self._config['MySQLSettings']['table_name'], *record.values())
+		query = TEMPLATE_SQL_INSERT.format(self._config['MySQLSettings']['table_name'], *record.values())
 		self._execute_query(query)
 
 		return record
@@ -78,9 +78,7 @@ class MySQLStorage(StorageInterface):
 		return cursor
 
 	def _create_database(self):
-		query = f""" 
-			CREATE DATABASE IF NOT EXISTS {self._config['MySQLSettings']['database_name']}
-		"""
+		query = TEMPLATE_SQL_CREATE_DB.format(self._config['MySQLSettings']['database_name'])
 		
 		self._execute_query(query)
 
@@ -91,21 +89,23 @@ class MySQLStorage(StorageInterface):
 
 	def _create_table(self):
 		attr = ORDER_ATTRIBUTES
-		query = f"""
-		CREATE TABLE IF NOT EXISTS {self._config['MySQLSettings']['table_name']} (
-			INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT, 
-			{attr[0]} VARCHAR(10),
-			{attr[1]} ENUM({', '.join(SIDES)}),
-			{attr[2]} ENUM({', '.join(map(lambda instrument: instrument[0], INSTRUMENTS))}),
-			{attr[3]} ENUM({', '.join(map(lambda status: ' '.join(status) if type(status) == list else status, STATUSES))}),
-			{attr[4]} INT(4),
-			{attr[5]} INT(4),
-			{attr[6]} FLOAT(4),
-			{attr[7]} FLOAT(4),
-			{attr[8]} VARCHAR(255),
-			{attr[9]} VARCHAR(100))
-			{attr[10]} DATETIME(3),
-		"""
+		query = TEMPLATE_SQL_CREATE_TABLE.format(
+			self._config['MySQLSettings']['table_name'],
+			attr["ID"],
+			attr["SIDE"],
+			', '.join(SIDES),
+			attr["INSTRUMENT"],
+			', '.join(map(lambda instrument: instrument[0], INSTRUMENTS)),
+			attr["STATUS"],
+			', '.join(map(lambda status: ' '.join(status) if type(status) == list else status, STATUSES)),
+			attr["PX_INIT"],
+			attr["PX_FILL"],
+			attr["VOLUME_INIT"],
+			attr["VOLUME_FILL"],
+			attr["NOTE"],
+			attr["TAGS"],
+			attr["DATE"]
+		)
 		self._execute_query(query)
 
 	def _mapping_response(self, cursor):

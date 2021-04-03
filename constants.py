@@ -39,6 +39,27 @@ DATE_FORMAT_FOR_DATE_ATTRIBUTE = '%d.%m.%Y %H:%M:%S'
 # format for displaying the list of orders in the console
 FORMAT_DISPLAYING_ORDERS = '{:<13}{:<7}{:<13}{:<14}{:<12}{:<12}{:<14}{:<14}{:<10}{:<64}{:<26}'
 
+# templates for sql queries
+TEMPLATE_SQL_INSERT = "INSERT INTO {} VALUES ('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')"
+TEMPLATE_SQL_SELECT = "SELECT * FROM {}"
+TEMPLATE_SQL_CREATE_DB = "CREATE DATABASE IF NOT EXISTS {}"
+TEMPLATE_SQL_CREATE_TABLE = """
+	CREATE TABLE IF NOT EXISTS {} (
+		INT(5) PRIMARY KEY NOT NULL AUTO_INCREMENT, 
+		{} VARCHAR(10),
+		{} ENUM({}),
+		{} ENUM({}),
+		{} ENUM({}),
+		{} INT(4),
+		{} INT(4),
+		{} FLOAT(4),
+		{} FLOAT(4),
+		{} VARCHAR(255),
+		{} VARCHAR(100))
+		{} DATETIME(3),
+	"""
+
+
 ORDER_ATTRIBUTES = [
 	'ID',
 	'SIDE',
