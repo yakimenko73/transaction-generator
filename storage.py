@@ -25,21 +25,21 @@ class RecordRepository:
 
 class ArrayStorage(StorageInterface):
 	def __init__(self, config: dict=None):
-		self.__array = []
+		self._array = []
 
 	def find_all(self):
-		return self.__array
+		return self._array
 
 	def find_by_id(self, id):
 		try:
-			record = self.__array[id]
+			record = self._array[id]
 		except IndexError as ex:
 			record = None
 		return record
 
 	def create(self, data):
 		record = data.__dict__
-		self.__array.append(record)
+		self._array.append(record)
 		return record
 
 
