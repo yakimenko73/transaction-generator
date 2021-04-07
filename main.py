@@ -57,7 +57,7 @@ class RecordBuilder(RecordBuilderInterface):
 		self.pxinit_obj = PXInitGenerator()
 		self.pxfill_obj = PXFillGenerator(*config["PXFillSettings"].values())
 		self.volume_init_obj = VolumeInitGenerator(*config["VolumeInitSettings"].values())
-		self.volume_fill_obj = VolumeFillGenerator(1000, 4432423)
+		self.volume_fill_obj = VolumeFillGenerator(*config["VolumeFillSettings"].values())
 		self.date_obj = DateGenerator(*config["DateSettings"].values())
 		self.note_obj = NoteGenerator(*config["NoteSettings"].values())
 		self.tag_obj = TagGenerator(*config["TagSettings"].values())
