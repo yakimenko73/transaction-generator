@@ -1,0 +1,55 @@
+app:
+  csv_path: output/tx.csv
+
+logger:
+  level: DEBUG
+  file_path: ../logs/logs_{time}.log
+
+generators:
+  id_generator:
+    modulus: 4294967296
+    multiplier: 65539
+    increment: 0
+    seed: 1
+  side_generator:
+    modulus: 100
+    multiplier: 1
+    increment: 3
+  instrument_generator:
+    modulus: 13
+    multiplier: 1
+    increment: 3
+  status_generator:
+    modulus: 300
+    multiplier: 7
+    increment: 4
+  px_fill_generator:
+    modulus: 0.00101
+    multiplier: 0.0002
+    increment: 0.00032
+  volume_init_generator:
+    modulus: 1000000
+    multiplier: 1000
+    increment: 4432423
+    seed: 1
+  volume_fill_generator:
+    multiplier: 1000
+    increment: 4432423
+  date_generator:
+    modulus: 1000
+    multiplier: 12
+    increment: 7
+    seed: 1
+    start_date: 2021-02-01T00:00:00.000000Z
+  note_generator:
+    modulus: 13
+    multiplier: 1
+    increment: 3
+  tag_generator:
+    seed: 1
+    num_modulus: 13
+    num_multiplier: 1
+    num_increment: 3
+    tag_modulus: 423543
+    tag_multiplier: 1000
+    tag_increment: 43232

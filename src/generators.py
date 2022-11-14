@@ -4,14 +4,10 @@ import math
 import datetime as dt
 import numpy as np
 
-from abc import ABC, abstractmethod, abstractproperty
-
 from constants import *
 from interfaces import GeneratorInterface
-from main import Config
 
-
-CONFIG = Config().setup()
+CONFIG = dict()
 
 
 class IdGenerator(GeneratorInterface):
