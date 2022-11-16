@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from loguru import logger
 
-from src.config.config import Config
+from src.config import Config
 from src.order.book import FiatOrderBook
 from src.order.storage import ArrayStorage
 

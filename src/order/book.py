@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
-from src.order.prng.builder import OrderBuilder, PseudoRandomFiatOrderBuilder
+from .builder import OrderBuilder, PseudoRandomFiatOrderBuilder
 from .domain.domain import Order, FiatOrder
-from ..config.config import Config
+from src.config import Config
 
 
 class OrderBook(ABC):

@@ -1,6 +1,6 @@
-from src.config.config import Config
-from src.order.domain.domain import FiatOrder
-from .generator import *
+from src.config import Config
+from .domain.domain import FiatOrder
+from .generators import *
 
 
 class OrderBuilder(ABC):

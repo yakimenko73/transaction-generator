@@ -1,3 +1,4 @@
+from datetime import datetime
 from logging import _nameToLevel as valid_log_levels
 from typing import Final, Any
 
@@ -5,8 +6,6 @@ import yaml
 from loguru import logger
 from pydantic.class_validators import validator
 from pydantic.main import BaseModel
-
-from .generator_config import GeneratorsConfig
 
 CONFIG_PATH: Final[str] = '../config/config.yaml'
 
@@ -25,6 +24,19 @@ class LoggerConfig(BaseModel):
         if level not in valid_log_levels:
             raise ValueError(f'Invalid log level. Expected: {valid_log_levels}')
         return level
+
+
+class IdGeneratorConfig(BaseModel):
+    seed: int
+
+
+class DateGeneratorConfig(BaseModel):
+    start_date: datetime
+
+
+class GeneratorsConfig(BaseModel):
+    id_generator: IdGeneratorConfig
+    date_generator: DateGeneratorConfig
 
 
 class Config(BaseModel):
