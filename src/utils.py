@@ -1,24 +1,17 @@
-import re
-import os
+import random
+from enum import Enum
+from typing import Type
 
 
-class Singleton(type):
-	_instances = None
+def rand_hex(start: int, stop: int, seed: int) -> hex:
+    random.seed(seed)
 
-	def __call__(cls, *args, **kwargs):
-		if not cls._instances:
-			cls._instances = super(Singleton, cls).__call__(*args, **kwargs)
-		return cls._instances
+    return hex(random.randint(start, stop))
 
 
-def create_file_path(path):
-	pathdir = ''.join(re.findall(r"\w+/", path))
-	if pathdir:
-		if not os.path.exists(pathdir):
-			try:
-				os.makedirs(pathdir)
-			except OSError as ex:
-				logging.warning("Failed to create file in the selected path. " +
-					f"Created a file in the executing directory. Path: {path}. Ex: {ex}")
-				path = os.path.basename(path)
-	return path
+def rand_bool() -> bool:
+    return bool(random.getrandbits(1))
+
+
+def rand_enum_value(enum: Type[Enum]) -> Enum:
+    return enum(random.randint(1, len(enum) - 1))

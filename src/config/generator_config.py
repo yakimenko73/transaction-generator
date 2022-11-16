@@ -14,6 +14,7 @@ class SideGeneratorConfig(BaseModel):
     modulus: int
     multiplier: int
     increment: int
+    seed: int
 
 
 class InstrumentGeneratorConfig(BaseModel):
