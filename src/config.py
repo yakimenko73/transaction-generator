@@ -28,14 +28,36 @@ class LoggerConfig(BaseModel):
 
 class IdGeneratorConfig(BaseModel):
     seed: int
+    start: int
+    stop: int
+
+
+class PxFillConfig(BaseModel):
+    rounding: int
+    start: float
+    stop: float
+
+
+class VolumeInitConfig(BaseModel):
+    rounding: int
+    start: int
+    stop: int
 
 
 class DateGeneratorConfig(BaseModel):
     start_date: datetime
+    start: int
+    stop: int
 
 
 class GeneratorsConfig(BaseModel):
+    max_orders: int
+    percent_completed_orders: int
+    percent_created_and_completed_orders: int
+    percent_created_orders: int
     id_generator: IdGeneratorConfig
+    px_fill_generator: PxFillConfig
+    volume_init_generator: VolumeInitConfig
     date_generator: DateGeneratorConfig
 
 

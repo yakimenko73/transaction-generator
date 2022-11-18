@@ -9,15 +9,15 @@ class OrderBuilder(ABC):
         pass
 
     @abstractmethod
-    def produce_side(self) -> str:
+    def produce_side(self) -> OrderSide:
         pass
 
     @abstractmethod
-    def produce_instrument(self) -> str:
+    def produce_instrument(self) -> OrderInstrument:
         pass
 
     @abstractmethod
-    def produce_status(self) -> str:
+    def produce_status(self) -> OrderStatus:
         pass
 
     @abstractmethod
@@ -37,15 +37,15 @@ class OrderBuilder(ABC):
         pass
 
     @abstractmethod
-    def produce_date(self) -> str:
+    def produce_date(self) -> datetime:
         pass
 
     @abstractmethod
-    def produce_note(self) -> str:
+    def produce_note(self) -> OrderNote:
         pass
 
     @abstractmethod
-    def produce_tags(self) -> str:
+    def produce_tags(self) -> List[OrderTag]:
         pass
 
 
@@ -57,9 +57,9 @@ class PseudoRandomFiatOrderBuilder(OrderBuilder):
         self._instrument_gen = InstrumentGenerator()
         self._status_gen = StatusGenerator()
         self._px_init_gen = PXInitGenerator()
-        self._px_fill_gen = PXFillGenerator()
-        self._volume_init_gen = VolumeInitGenerator()
-        self._volume_fill_gen = VolumeFillGenerator()
+        self._px_fill_gen = PXFillGenerator(config.generators.px_fill_generator)
+        self._volume_init_gen = VolumeInitGenerator(config.generators.volume_init_generator)
+        self._volume_fill_gen = VolumeFillGenerator(config.generators.volume_init_generator)
         self._date_gen = DateGenerator(config.generators.date_generator)
         self._note_gen = NoteGenerator()
         self._tags_gen = TagsGenerator()

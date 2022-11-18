@@ -1,26 +1,26 @@
 import random
 from abc import ABC, abstractmethod
 from datetime import timedelta, datetime
-from typing import List
+from typing import List, Any
 
-from src.config import IdGeneratorConfig, DateGeneratorConfig
-from src.constants import *
+from src.config import IdGeneratorConfig, DateGeneratorConfig, PxFillConfig, VolumeInitConfig
 from src.utils import rand_hex, rand_bool, rand_enum_value
 from .domain.enums import *
 
 
 class Generator(ABC):
     @abstractmethod
-    def generate(self, *args, **kwargs):
+    def generate(self, *args, **kwargs) -> Any:
         pass
 
 
 class IdGenerator(Generator):
     def __init__(self, config: IdGeneratorConfig):
         self._id = config.seed
+        self._config = config
 
     def generate(self) -> hex:
-        self._id = rand_hex(ORDER_ID_MIN_LENGTH, ORDER_ID_MAX_LENGTH, self._id)
+        self._id = rand_hex(self._config.start, self._config.stop, self._id)
 
         return self._id
 
@@ -42,30 +42,38 @@ class StatusGenerator(Generator):
 
 class PXInitGenerator(Generator):
     def generate(self, side: OrderSide, instrument: OrderInstrument) -> float:
-        enum = OrderInstrumentSellPrice[instrument.name] if side == OrderSide.SELL \
-            else OrderInstrumentBuyPrice[instrument.name]
+        sell, buy = OrderInstrumentSellPrice[instrument.name], OrderInstrumentBuyPrice[instrument.name]
 
-        return enum.value
+        return sell.value if side == OrderSide.SELL else buy.value
 
 
 class PXFillGenerator(Generator):
+    def __init__(self, config: PxFillConfig):
+        self._config = config
+
     def generate(self, px_init: float) -> float:
-        diff = random.uniform(ORDER_PX_FILL_START, ORDER_PX_FILL_STOP)
+        diff = random.uniform(self._config.start, self._config.stop)
         px_fill = px_init + diff if rand_bool() else px_init
 
-        return round(px_fill, ORDER_PX_ROUNDING)
+        return round(px_fill, self._config.rounding)
 
 
 class VolumeInitGenerator(Generator):
-    def generate(self) -> int:
-        volume = random.randint(ORDER_VOLUME_INIT_START, ORDER_VOLUME_INIT_STOP)
+    def __init__(self, config: VolumeInitConfig):
+        self._config = config
 
-        return round(volume, ORDER_VOLUME_ROUNDING)
+    def generate(self) -> int:
+        volume = random.randint(self._config.start, self._config.stop)
+
+        return round(volume, self._config.rounding)
 
 
 class VolumeFillGenerator(Generator):
+    def __init__(self, config: VolumeInitConfig):
+        self._config = config
+
     def generate(self, volume_init: int, status: OrderStatus) -> int:
-        unfulfilled = random.randint(ORDER_VOLUME_INIT_START, volume_init)
+        unfulfilled = random.randint(self._config.start, volume_init)
 
         return volume_init - unfulfilled if status == OrderStatus.PARTIAL_FILL else volume_init
 
@@ -73,9 +81,10 @@ class VolumeFillGenerator(Generator):
 class DateGenerator(Generator):
     def __init__(self, config: DateGeneratorConfig):
         self._date = config.start_date
+        self._config = config
 
     def generate(self) -> datetime:
-        increment = random.randint(ORDER_DATE_INCREMENT_START, ORDER_DATE_INCREMENT_STOP)
+        increment = random.randint(self._config.start, self._config.stop)
         self._date = self._date + timedelta(milliseconds=increment)
 
         return self._date
