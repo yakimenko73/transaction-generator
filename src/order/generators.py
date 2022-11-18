@@ -98,6 +98,6 @@ class NoteGenerator(Generator):
 class TagsGenerator(Generator):
     def generate(self) -> List[OrderTag]:
         tags_count = random.randint(1, len(OrderTag) - 1)
-        tags = list(filter(lambda tag: tag != OrderTag.UNRECOGNIZED, OrderTag))
+        tags = list(filter(lambda tag: tag != OrderTag.UNSPECIFIED, OrderTag))
 
         return random.choices(tags, k=tags_count)

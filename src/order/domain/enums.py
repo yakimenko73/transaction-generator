@@ -2,13 +2,13 @@ from enum import Enum
 
 
 class OrderSide(Enum):
-    UNRECOGNIZED = 0
+    UNSPECIFIED = 0
     SELL = 1
     BUY = 2
 
 
 class OrderInstrument(Enum):
-    UNRECOGNIZED = 0
+    UNSPECIFIED = 0
     EURGBP = 1
     EURCHF = 2
     EURCAD = 3
@@ -23,7 +23,7 @@ class OrderInstrument(Enum):
 
 
 class OrderInstrumentBuyPrice(Enum):
-    UNRECOGNIZED = 0
+    UNSPECIFIED = 0
     EURGBP = 0.88491
     EURCHF = 1.08052
     EURCAD = 1.55111
@@ -38,7 +38,7 @@ class OrderInstrumentBuyPrice(Enum):
 
 
 class OrderInstrumentSellPrice(Enum):
-    UNRECOGNIZED = 0
+    UNSPECIFIED = 0
     EURGBP = 0.88473
     EURCHF = 1.02197
     EURCAD = 1.41313
@@ -53,7 +53,7 @@ class OrderInstrumentSellPrice(Enum):
 
 
 class OrderStatus(Enum):
-    UNRECOGNIZED = 0
+    UNSPECIFIED = 0
     NEW = 1
     IN_PROCESS = 2
     FILL = 3
@@ -63,7 +63,7 @@ class OrderStatus(Enum):
 
 
 class OrderNote(Enum):
-    UNRECOGNIZED = 0
+    UNSPECIFIED = 0
     NOTE1 = 1
     NOTE2 = 2
     NOTE3 = 3
@@ -76,7 +76,7 @@ class OrderNote(Enum):
 
 
 class OrderTag(Enum):
-    UNRECOGNIZED = 0
+    UNSPECIFIED = 0
     TRADE = 1
     DISTANCE_TRADE = 2
     REGULAR_TRADE = 3

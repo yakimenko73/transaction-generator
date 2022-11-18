@@ -2,16 +2,19 @@ from loguru import logger
 
 from src.config import Config
 from src.order.book import FiatOrderBook
+from src.order.builder import PseudoRandomFiatOrderBuilder
 from src.order.storage import ArrayStorage
 
 
-def workflow(config: Config):
-    order_book = FiatOrderBook(config)
+def workflow(config: Config) -> None:
     storage = ArrayStorage()
-    for i in range(7200):
-        order = order_book.get_last_order()
-        storage.add(order)
-        logger.info(storage.find_by_id(order.id))
+    order_book = FiatOrderBook(config.generators, storage)
+    order_builder = PseudoRandomFiatOrderBuilder(config.generators)
+    for i in range(config.generators.max_orders):
+        order = order_builder.build()
+        order_book.add(order)
+
+    logger.info(f'Order book contains {order_book.size} generated orders')
 
 
 if __name__ == "__main__":

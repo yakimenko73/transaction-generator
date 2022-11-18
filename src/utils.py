@@ -15,3 +15,7 @@ def rand_bool() -> bool:
 
 def rand_enum_value(enum: Type[Enum]) -> Enum:
     return enum(random.randint(1, len(enum) - 1))
+
+
+def percentage_off(num: int, percent: int) -> float:
+    return percent / 100 * num

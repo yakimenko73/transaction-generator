@@ -1,39 +1,89 @@
 from abc import ABC, abstractmethod
 
-from .builder import OrderBuilder, PseudoRandomFiatOrderBuilder
+from loguru import logger
+
+from src.config import GeneratorsConfig
+from src.order.storage import Storage
+from src.utils import percentage_off
 from .domain.domain import Order, FiatOrder
-from src.config import Config
+from .domain.enums import OrderStatus
 
 
 class OrderBook(ABC):
     @abstractmethod
-    def get_last_order(self) -> Order:
+    def add(self, order: Order) -> None:
+        pass
+
+
+class OrderHistoryLog(ABC):
+    @abstractmethod
+    def write(self, order: FiatOrder) -> None:
+        pass
+
+    @abstractmethod
+    def write_after_created(self, order: FiatOrder) -> None:
+        pass
+
+    @abstractmethod
+    def write_before_completed(self, order: FiatOrder) -> None:
         pass
 
 
 class FiatOrderBook(OrderBook):
-    def __init__(self, config: Config):
-        self._builder = PseudoRandomFiatOrderBuilder(config)
+    def __init__(self, config: GeneratorsConfig, storage: Storage):
+        self._orders_log = FiatOrderHistoryLog(storage)
+        self._config = config
+        self._size = 0
 
     @property
-    def builder(self) -> OrderBuilder:
-        return self._builder
+    def size(self):
+        return self._size
 
-    @builder.setter
-    def builder(self, builder: OrderBuilder):
-        self._builder = builder
+    def add(self, order: FiatOrder) -> None:
+        if self._size < self._first_segment_size():
+            self._orders_log.write_after_created(order)
+        elif self._size < self._first_segment_size() + self._second_segment_size():
+            self._orders_log.write(order)
+        else:
+            self._orders_log.write_before_completed(order)
 
-    def get_last_order(self) -> FiatOrder:
-        self._builder.produce_id()
-        side = self._builder.produce_side()
-        instrument = self._builder.produce_instrument()
-        status = self._builder.produce_status()
-        px_init = self._builder.produce_px_init(side, instrument)
-        self._builder.produce_px_fill(px_init)
-        volume_init = self._builder.produce_volume_init()
-        self._builder.produce_volume_fill(volume_init, status)
-        self._builder.produce_note()
-        self._builder.produce_tags()
-        self._builder.produce_date()
+        self._size += 1
 
-        return self._builder.order
+        logger.info(f'{order.id} order successfully added to storage')
+
+    def _first_segment_size(self) -> int:
+        return self._segment_size(self._config.percent_completed_orders)
+
+    def _second_segment_size(self) -> int:
+        return self._segment_size(self._config.percent_created_and_completed_orders)
+
+    def _segment_size(self, segment_percent: int) -> int:
+        return int(percentage_off(self._config.max_orders, segment_percent))
+
+
+class FiatOrderHistoryLog(OrderHistoryLog):
+    def __init__(self, storage: Storage):
+        self._storage = storage
+
+    def write(self, order: FiatOrder) -> None:
+        processing_status = order.status
+        self._save(order, OrderStatus.NEW)
+        self._save(order, OrderStatus.IN_PROCESS)
+        self._save(order, processing_status)
+        self._save(order, OrderStatus.DONE)
+
+    def write_after_created(self, order: FiatOrder) -> None:
+        processing_status = order.status
+        self._save(order, OrderStatus.IN_PROCESS)
+        self._save(order, processing_status)
+        self._save(order, OrderStatus.DONE)
+
+    def write_before_completed(self, order: FiatOrder) -> None:
+        processing_status = order.status
+        self._save(order, OrderStatus.NEW)
+        self._save(order, OrderStatus.IN_PROCESS)
+        self._save(order, processing_status)
+
+    def _save(self, order: FiatOrder, status: OrderStatus) -> None:
+        order.update_status(status)
+        self._storage.add(order)

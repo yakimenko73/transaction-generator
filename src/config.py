@@ -68,6 +68,8 @@ class Config(BaseModel):
 
     @classmethod
     def load(cls) -> Any:
+        logger.debug(f'Trying to load config from {CONFIG_PATH}')
+
         try:
             with open(CONFIG_PATH, 'r') as f:
                 yml = yaml.safe_load(f)
@@ -75,7 +77,9 @@ class Config(BaseModel):
             logger.error(ex)
             raise ex
 
+        logger.debug('Application configured successfully')
+
         return cls(**yml)
 
-    def configure_logger(self):
+    def configure_logger(self) -> None:
         logger.add(self.logger.file_path, level=self.logger.level)
