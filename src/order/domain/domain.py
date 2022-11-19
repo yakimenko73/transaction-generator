@@ -1,7 +1,8 @@
+import dataclasses
 from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from typing import List
+from typing import List, Any
 
 from src.order.domain.enums import *
 
@@ -24,6 +25,5 @@ class FiatOrder(Order):
     tags: List[OrderTag] = field(default_factory=list)
     date: datetime = None
 
-    def update_status(self, status: OrderStatus) -> None:
-        self.status = status
-        self.date = self.date + timedelta(milliseconds=self.date.second)
+    def replace(self, status: OrderStatus) -> Any:
+        return dataclasses.replace(self, status=status, date=self.date + timedelta(milliseconds=self.date.second))

@@ -1,5 +1,5 @@
 app:
-  csv_path: output/tx.csv
+  csv_path: ../output/orders.csv
 
 logger:
   level: INFO
@@ -28,4 +28,4 @@ generators:
   date_generator:
     start: 100
     stop: 15000
-    start_date: 2021-02-01T00:00:00.000000Z
+    start_date: 2022-01-01T00:00:00.000000Z

@@ -6,6 +6,9 @@ class OrderSide(Enum):
     SELL = 1
     BUY = 2
 
+    def __str__(self):
+        return self.name
+
 
 class OrderInstrument(Enum):
     UNSPECIFIED = 0
@@ -21,20 +24,23 @@ class OrderInstrument(Enum):
     GBPCAD = 10
     EURRUB = 11
 
+    def __str__(self):
+        return self.name
+
 
 class OrderInstrumentBuyPrice(Enum):
     UNSPECIFIED = 0
-    EURGBP = 0.88491
-    EURCHF = 1.08052
-    EURCAD = 1.55111
-    AUDEUR = 0.629698
-    EURNZD = 1.68618
-    EURJPY = 127.09323
-    GBPJPY = 143.51412
-    CHFJPY = 117.5189
-    AUDJPY = 80.03001
-    GBPCAD = 1.75086
-    EURRUB = 91.99600
+    EURGBP = 1.00229
+    EURCHF = 1.88491
+    EURCAD = 1.97120
+    AUDEUR = 0.62000
+    EURNZD = 1.992710
+    EURJPY = 127.07816
+    GBPJPY = 145.69532
+    CHFJPY = 118.11128
+    AUDJPY = 79.32006
+    GBPCAD = 1.32133
+    EURRUB = 89.21300
 
 
 class OrderInstrumentSellPrice(Enum):
@@ -61,6 +67,9 @@ class OrderStatus(Enum):
     CANCEL = 5
     DONE = 6
 
+    def __str__(self):
+        return self.name
+
 
 class OrderNote(Enum):
     UNSPECIFIED = 0
@@ -74,6 +83,9 @@ class OrderNote(Enum):
     NOTE8 = 8
     NOTE9 = 9
 
+    def __str__(self):
+        return self.name
+
 
 class OrderTag(Enum):
     UNSPECIFIED = 0
@@ -82,3 +94,6 @@ class OrderTag(Enum):
     REGULAR_TRADE = 3
     SPECIAL_TRADE = 4
     TRANSFER = 5
+
+    def __str__(self):
+        return self.name

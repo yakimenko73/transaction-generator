@@ -105,10 +105,10 @@ class PseudoRandomFiatOrderBuilder(OrderBuilder):
         return px
 
     def add_px_fill(self, px_init: float, status: OrderStatus) -> float:
-        px = self._px_fill_gen.generate(px_init)
+        px = self._px_fill_gen.generate(px_init) if status != OrderStatus.CANCEL else 0
         self._order.px_fill = px
 
-        return px if status != OrderStatus.CANCEL else 0
+        return px
 
     def add_volume_init(self) -> int:
         volume = self._volume_init_gen.generate()
@@ -117,10 +117,10 @@ class PseudoRandomFiatOrderBuilder(OrderBuilder):
         return volume
 
     def add_volume_fill(self, volume_init: int, status: OrderStatus) -> int:
-        volume = self._volume_fill_gen.generate(volume_init, status)
+        volume = self._volume_fill_gen.generate(volume_init, status) if status != OrderStatus.CANCEL else 0
         self._order.volume_fill = volume
 
-        return volume if status != OrderStatus.CANCEL else 0
+        return volume
 
     def add_date(self) -> datetime:
         date = self._date_gen.generate()
@@ -141,6 +141,8 @@ class PseudoRandomFiatOrderBuilder(OrderBuilder):
         return tags
 
     def build(self) -> FiatOrder:
+        self._order = FiatOrder()
+
         id_ = self.add_id()
         side = self.add_side()
         instrument = self.add_instrument()
@@ -155,4 +157,4 @@ class PseudoRandomFiatOrderBuilder(OrderBuilder):
 
         logger.info(f'Build new order with {id_} id')
 
-        return self.order
+        return self._order

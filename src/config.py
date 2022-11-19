@@ -7,6 +7,8 @@ from loguru import logger
 from pydantic.class_validators import validator
 from pydantic.main import BaseModel
 
+from src.utils import percentage_off
+
 CONFIG_PATH: Final[str] = '../config/config.yaml'
 
 
@@ -59,6 +61,12 @@ class GeneratorsConfig(BaseModel):
     px_fill_generator: PxFillConfig
     volume_init_generator: VolumeInitConfig
     date_generator: DateGeneratorConfig
+
+    def segment_size(self, segment_percent: int) -> int:
+        return int(percentage_off(self.max_orders, segment_percent))
+
+    def first_two_segments_size(self) -> int:
+        return self.segment_size(self.percent_completed_orders + self.percent_created_and_completed_orders)
 
 
 class Config(BaseModel):
