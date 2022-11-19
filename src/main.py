@@ -3,14 +3,14 @@ from typing import List
 from hurry.filesize import size
 from loguru import logger
 
-from src.config import Config, GeneratorsConfig
-from src.order.book import FiatOrderBook
-from src.order.builder import PseudoRandomFiatOrderBuilder
-from src.order.domain.domain import Order
-from src.order.storage import ArrayStorage, CsvFileStorage
+from config import Config, GeneratorConfig
+from orders.book import FiatOrderBook
+from orders.builder import PseudoRandomFiatOrderBuilder
+from orders.domain.domain import Order
+from orders.storage import ArrayStorage, CsvFileStorage
 
 
-def generate_orders(config: GeneratorsConfig) -> List[Order]:
+def generate_orders(config: GeneratorConfig) -> List[Order]:
     storage = ArrayStorage()
     order_book = FiatOrderBook(config, storage)
     order_builder = PseudoRandomFiatOrderBuilder(config)
@@ -24,7 +24,7 @@ def generate_orders(config: GeneratorsConfig) -> List[Order]:
 
 
 def workflow(config: Config) -> None:
-    orders = generate_orders(config.generators)
+    orders = generate_orders(config.generator)
 
     with CsvFileStorage(config.app.csv_path) as storage:
         storage.write(orders)

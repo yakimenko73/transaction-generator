@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 from datetime import timedelta, datetime
 from typing import List, Any
 
-from src.config import IdGeneratorConfig, DateGeneratorConfig, PxFillConfig, VolumeInitConfig
-from src.utils import rand_hex, rand_bool, rand_enum_value
+from config import IdGeneratorConfig, DateGeneratorConfig, PxFillConfig, VolumeInitConfig
+from utils import rand_hex, rand_bool, rand_enum_value
 from .domain.enums import *
 
 

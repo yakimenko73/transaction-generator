@@ -5,7 +5,7 @@ from typing import List, Optional
 from dataclass_csv import DataclassWriter
 from typing.io import IO
 
-from src.order.domain.domain import Order
+from .domain.domain import Order
 
 
 class InMemoryStorage(ABC):

@@ -1,6 +1,6 @@
 from loguru import logger
 
-from src.config import GeneratorsConfig
+from config import GeneratorConfig
 from .domain.domain import FiatOrder, Order
 from .generators import *
 
@@ -56,7 +56,7 @@ class OrderBuilder(ABC):
 
 
 class PseudoRandomFiatOrderBuilder(OrderBuilder):
-    def __init__(self, config: GeneratorsConfig):
+    def __init__(self, config: GeneratorConfig):
         self._order = FiatOrder()
         self._id_gen = IdGenerator(config.id_generator)
         self._side_gen = SideGenerator()

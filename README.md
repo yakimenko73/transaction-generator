@@ -4,7 +4,7 @@
 
 ## What is it?
 
-Script to create a pseudo-random trading transaction history
+Script to create a pseudo-random trading orders history
 
 ### Built With
 

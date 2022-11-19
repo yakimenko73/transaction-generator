@@ -7,9 +7,9 @@ from loguru import logger
 from pydantic.class_validators import validator
 from pydantic.main import BaseModel
 
-from src.utils import percentage_off
+from utils import percentage_off
 
-CONFIG_PATH: Final[str] = '../config/config.yaml'
+CONFIG_PATH: Final[str] = './config/config.yaml'
 
 
 class AppConfig(BaseModel):
@@ -52,7 +52,7 @@ class DateGeneratorConfig(BaseModel):
     stop: int
 
 
-class GeneratorsConfig(BaseModel):
+class GeneratorConfig(BaseModel):
     max_orders: int
     percent_completed_orders: int
     percent_created_and_completed_orders: int
@@ -71,7 +71,7 @@ class GeneratorsConfig(BaseModel):
 
 class Config(BaseModel):
     app: AppConfig
-    generators: GeneratorsConfig
+    generator: GeneratorConfig
     logger: LoggerConfig
 
     @classmethod

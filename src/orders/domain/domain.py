@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import List, Any
 
-from src.order.domain.enums import *
+from .enums import *
 
 
 class Order(ABC):

@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 
 from loguru import logger
 
-from src.config import GeneratorsConfig
-from src.order.storage import InMemoryStorage
+from config import GeneratorConfig
 from .domain.domain import Order, FiatOrder
 from .domain.enums import OrderStatus
+from .storage import InMemoryStorage
 
 
 class OrderBook(ABC):
@@ -15,7 +15,7 @@ class OrderBook(ABC):
 
 
 class FiatOrderBook(OrderBook):
-    def __init__(self, config: GeneratorsConfig, storage: InMemoryStorage):
+    def __init__(self, config: GeneratorConfig, storage: InMemoryStorage):
         self._config = config
         self._storage = storage
         self._size = 0
