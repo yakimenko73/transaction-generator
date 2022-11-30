@@ -1,9 +1,9 @@
 app:
-  csv_path: ./output/orders.csv
+  csv_path: ../output/orders.csv
 
 logger:
   level: INFO
-  file_path: ./logs/logs_{time}.log
+  file_path: ../logs/logs_{time}.log
 
 generator:
   max_orders: 2000
