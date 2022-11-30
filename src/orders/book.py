@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from loguru import logger
 
 from config import GeneratorConfig
-from .domain.domain import Order, FiatOrder
+from .domain.models import Order, FiatOrder
 from .domain.enums import OrderStatus
 from .storage import InMemoryStorage
 

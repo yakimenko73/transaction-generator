@@ -83,7 +83,7 @@ class Config(BaseModel):
             logger.error(ex)
             raise ex
 
-        logger.debug('Application configured successfully')
+        logger.debug('Application config load successfully')
 
         return cls(**yml)
 

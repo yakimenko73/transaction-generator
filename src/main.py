@@ -5,7 +5,7 @@ from typing import List, Final
 from config import Config, GeneratorConfig
 from orders.book import FiatOrderBook
 from orders.builder import PseudoRandomFiatOrderBuilder
-from orders.domain.domain import Order
+from orders.domain.models import Order
 from orders.storage import ArrayStorage, CsvFileStorage
 
 CONFIG_PATH: Final[str] = '../config/config.yaml'

@@ -1,7 +1,7 @@
 from loguru import logger
 
 from config import GeneratorConfig
-from .domain.domain import FiatOrder, Order
+from .domain.models import FiatOrder, Order
 from .generators import *
 
 
