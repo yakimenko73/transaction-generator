@@ -34,7 +34,7 @@ Requires Python >= 3.8
    ```
 2. Runs script
    ```sh
-   python3 main.py
+   cd src && python3 main.py
    ```
 
 ## Diagrams [**DEPRECATED**]

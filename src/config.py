@@ -1,6 +1,6 @@
 from datetime import datetime
 from logging import _nameToLevel as valid_log_levels
-from typing import Final, Any
+from typing import Any
 
 import yaml
 from loguru import logger
@@ -8,8 +8,6 @@ from pydantic.class_validators import validator
 from pydantic.main import BaseModel
 
 from utils import percentage_off
-
-CONFIG_PATH: Final[str] = './config/config.yaml'
 
 
 class AppConfig(BaseModel):
@@ -75,11 +73,11 @@ class Config(BaseModel):
     logger: LoggerConfig
 
     @classmethod
-    def load(cls) -> Any:
-        logger.debug(f'Trying to load config from {CONFIG_PATH}')
+    def load(cls, path: str) -> Any:
+        logger.debug(f'Trying to load config from {path}')
 
         try:
-            with open(CONFIG_PATH, 'r') as f:
+            with open(path, 'r') as f:
                 yml = yaml.safe_load(f)
         except FileNotFoundError as ex:
             logger.error(ex)

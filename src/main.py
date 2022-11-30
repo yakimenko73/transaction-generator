@@ -1,13 +1,14 @@
-from typing import List
-
 from hurry.filesize import size
 from loguru import logger
+from typing import List, Final
 
 from config import Config, GeneratorConfig
 from orders.book import FiatOrderBook
 from orders.builder import PseudoRandomFiatOrderBuilder
 from orders.domain.domain import Order
 from orders.storage import ArrayStorage, CsvFileStorage
+
+CONFIG_PATH: Final[str] = '../config/config.yaml'
 
 
 def generate_orders(config: GeneratorConfig) -> List[Order]:
@@ -33,7 +34,7 @@ def workflow(config: Config) -> None:
 
 
 if __name__ == "__main__":
-    cfg: Config = Config.load()
+    cfg: Config = Config.load(CONFIG_PATH)
     cfg.configure_logger()
 
     workflow(cfg)
