@@ -1,6 +1,8 @@
-[![SWUbanner](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
+# <p align="center">Transaction history generator</p>
 
-# Transaction history generator
+[![Pray for Ukraine](https://img.shields.io/badge/made_in-ukraine-ffd700.svg?labelColor=0057b7)](https://stand-with-ukraine.pp.ua)
+[![Licence](https://img.shields.io/github/license/yakimenko73/transaction-generator)](https://github.com/yakimenko73/transaction-generator/blob/master/LICENSE)
+[![Code factor](https://www.codefactor.io/repository/github/yakimenko73/python-crontab/badge)](https://www.codefactor.io/repository/github/yakimenko73/transaction-generator)
 
 ## What is it?
 
